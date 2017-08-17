@@ -15,10 +15,29 @@ export class Box {
      * @memberof Box
      */
     constructor() {
+        this.id = "";
         this.width = 0;
         this.height = 0;
         this.x = 0;
         this.y = 0;
+    }
+
+    /**
+     * Gets the id.
+     * 
+     * @readonly
+     * @memberof Box
+     */
+    get id() { return this.id; }
+
+    /**
+     * Sets the id.
+     * 
+     * @memberof Box
+     */
+    set id(value) {
+        if (!value) throw "value cannot be null or undefined";
+        this.id = value;
     }
 
     /**

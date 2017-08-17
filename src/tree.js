@@ -15,12 +15,32 @@ import * as relation from "./relation";
 export class Node {
     /**
      * Creates an instance of Node.
+     * @param {any} content 
      * @memberof Node
      */
-    constructor() {
+    constructor(content) {
+        if (!this.content) throw "content cannot be null or undefined";
+
         this.children = [];
         this.arcs = [];
+        this.content = content;
     }
+
+    /**
+     * Gets the content of the node.
+     * 
+     * @readonly
+     * @memberof Node
+     */
+    get content() { return this.content; }
+
+    /**
+     * Gets the id of the content.
+     * 
+     * @readonly
+     * @memberof Node
+     */
+    get id() { return this.content.id; }
 
     /**
      * Gets the first child and arc. If no children is present, null is returned.
@@ -121,10 +141,13 @@ export class ChildInfo {
 export class Arc {
     /**
      * Creates an instance of Arc.
+     * @param {any} type 
      * @memberof Arc
      */
-    constructor() {
-        this.type = Arc.D;
+    constructor(type) {
+        if (!type) type = Arc.D;
+
+        this.type = type;
     }
 
     /**

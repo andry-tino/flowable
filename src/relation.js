@@ -12,8 +12,8 @@
 export class Relation {
     /**
      * Creates an instance of Relation.
-     * @param {any} lhs 
-     * @param {any} rhs 
+     * @param {Box} lhs 
+     * @param {Box} rhs 
      * @memberof Relation
      */
     constructor(lhs, rhs) {
@@ -21,8 +21,24 @@ export class Relation {
         if (!rhs) throw "rhs cannot be null or undefined";
 
         this.lhs = lhs;
-        this.rhs - rhs;
+        this.rhs = rhs;
     }
+
+    /**
+     * Gets the RHS.
+     * 
+     * @readonly
+     * @memberof Relation
+     */
+    get rhs() { return this.rhs; }
+
+    /**
+     * Gets the LHS.
+     * 
+     * @readonly
+     * @memberof Relation
+     */
+    get lhs() { return this.lhs; }
 
     /**
      * Gets the value for DOWN relation type.
