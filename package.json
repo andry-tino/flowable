@@ -1,0 +1,41 @@
+{
+  "name": "flowable",
+  "version": "1.0.0",
+  "description": "A library to generate flowing HTML-based content",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+
+  "scripts": {
+    "test": "./node_modules/karma/bin/karma start karma.conf.js"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andry-tino/flowable.git"
+  },
+
+  "keywords": [
+    "flow",
+    "html",
+    "javascript",
+    "content"
+  ],
+
+  "author": "Andrea Tino",
+  "license": "Apache-2.0",
+
+  "bugs": {
+    "url": "https://github.com/andry-tino/flowable/issues"
+  },
+
+  "homepage": "https://github.com/andry-tino/flowable#readme",
+
+  "devDependencies": {
+    "karma": "1.7.0",
+    "karma-chrome-launcher": "2.2.0",
+    "jasmine-core": ">=2.7.0",
+    "karma-jasmine": ">=1.1.0"
+  }
+}
