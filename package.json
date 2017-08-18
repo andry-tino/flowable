@@ -8,7 +8,7 @@
   },
 
   "scripts": {
-    "test": "./node_modules/karma/bin/karma start karma.conf.js"
+    "test": "./node_modules/jest/bin/jest.js"
   },
 
   "repository": {
@@ -33,9 +33,6 @@
   "homepage": "https://github.com/andry-tino/flowable#readme",
 
   "devDependencies": {
-    "karma": "1.7.0",
-    "karma-chrome-launcher": "2.2.0",
-    "jasmine-core": ">=2.7.0",
-    "karma-jasmine": ">=1.1.0"
+    "jest": "20.0.4"
   }
 }
