@@ -139,5 +139,9 @@ function checkValue(value) {
  * @returns 
  */
 function generateId() {
-    return "box-" + Math.random().toString(16).substring(9);
+    let r = Math.random();
+    r = r * 0xFFFFFF << 0;
+    r = r.toString(16);
+
+    return "box-" + r;
 }
