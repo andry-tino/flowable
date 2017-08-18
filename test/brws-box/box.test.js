@@ -3,10 +3,13 @@
  * Andrea Tino - 2017
  */
 
-import * as relation from "../../src/box";
+import * as components from "../../src/box";
 
-describe("basic", function() {
-    it("Test some basic shit", function() {
-        expect(0).toBe(0);
+describe("TestSuite for Box", function() {
+    let box = new components.Box();
+
+    it("Random id generation", function() {
+        expect(box.id).not.toBeNull();
     });
+
 });

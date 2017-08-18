@@ -15,11 +15,11 @@ export class Box {
      * @memberof Box
      */
     constructor() {
-        this.id = "";
-        this.width = 0;
-        this.height = 0;
-        this.x = 0;
-        this.y = 0;
+        this._id = generateId();
+        this._width = 0;
+        this._height = 0;
+        this._x = 0;
+        this._y = 0;
     }
 
     /**
@@ -28,7 +28,7 @@ export class Box {
      * @readonly
      * @memberof Box
      */
-    get id() { return this.id; }
+    get id() { return this._id; }
 
     /**
      * Sets the id.
@@ -37,7 +37,7 @@ export class Box {
      */
     set id(value) {
         if (!value) throw "value cannot be null or undefined";
-        this.id = value;
+        this._id = value;
     }
 
     /**
@@ -46,7 +46,7 @@ export class Box {
      * @readonly
      * @memberof Box
      */
-    get width() { return this.width; }
+    get width() { return this._width; }
 
     /**
      * Sets the width.
@@ -57,7 +57,7 @@ export class Box {
         if (!value) throw "Invalid value";
         if (!checkValue(value)) throw "Value must be a positive (or null) integer";
 
-        this.width = value;
+        this._width = value;
     }
 
     /**
@@ -66,7 +66,7 @@ export class Box {
      * @readonly
      * @memberof Box
      */
-    get height() { return this.height; }
+    get height() { return this._height; }
 
     /**
      * Sets the height.
@@ -77,7 +77,7 @@ export class Box {
         if (!value) throw "Invalid value";
         if (!checkValue(value)) throw "Value must be a positive (or null) integer";
 
-        this.height = value;
+        this._height = value;
     }
 
     /**
@@ -86,7 +86,7 @@ export class Box {
      * @readonly
      * @memberof Box
      */
-    get x() { return this.x; }
+    get x() { return this._x; }
 
     /**
      * Sets the x coordinate (from upper left corner).
@@ -97,7 +97,7 @@ export class Box {
         if (!value) throw "Invalid value";
         if (!checkValue(value)) throw "Value must be a positive (or null) integer";
 
-        this.x = value;
+        this._x = value;
     }
 
     /**
@@ -106,7 +106,7 @@ export class Box {
      * @readonly
      * @memberof Box
      */
-    get y() { return this.y; }
+    get y() { return this._y; }
 
     /**
      * Sets the y coordinate (from upper left corner).
@@ -117,7 +117,7 @@ export class Box {
         if (!value) throw "Invalid value"; 
         if (!checkValue(value)) throw "Value must be a positive (or null) integer";
 
-        this.y = value;
+        this._y = value;
     }
 }
 
@@ -131,4 +131,13 @@ function checkValue(value) {
     if (!value) return false;
 
     return Number.isInteger(value) && value >= 0;
+}
+
+/**
+ * Generates a rnadom hex id.
+ * 
+ * @returns 
+ */
+function generateId() {
+    return "box-" + Math.random().toString(16).substring(9);
 }
