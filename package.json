@@ -6,33 +6,30 @@
   "directories": {
     "test": "test"
   },
-
   "scripts": {
     "test": "./node_modules/jest/bin/jest.js"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/andry-tino/flowable.git"
   },
-
   "keywords": [
     "flow",
     "html",
     "javascript",
     "content"
   ],
-
   "author": "Andrea Tino",
   "license": "Apache-2.0",
-
   "bugs": {
     "url": "https://github.com/andry-tino/flowable/issues"
   },
-
   "homepage": "https://github.com/andry-tino/flowable#readme",
-
   "devDependencies": {
-    "jest": "20.0.4"
+    "babel-cli": "^6.26.0",
+    "babel-jest": "^20.0.3",
+    "babel-preset-env": "^1.6.0",
+    "jest": "20.0.4",
+    "regenerator-runtime": "^0.11.0"
   }
 }
