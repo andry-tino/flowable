@@ -139,9 +139,10 @@ function checkValue(value) {
  * @returns 
  */
 function generateId() {
-    let r = Math.random();
-    r = r * 0xFFFFFF << 0;
-    r = r.toString(16);
-
-    return "box-" + r;
+    let letters = '0123456789abcdef'.split('');
+    let r = 'box-';
+    for (let i = 0; i < 6; i++) {
+        r += letters[Math.floor(Math.random() * 10)];
+    }
+    return r;
 }

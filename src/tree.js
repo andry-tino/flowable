@@ -15,15 +15,15 @@ import * as relation from "./relation";
 export class Node {
     /**
      * Creates an instance of Node.
-     * @param {any} content 
+     * @param {any} content An object exposing a property called `id`.
      * @memberof Node
      */
     constructor(content) {
-        if (!this.content) throw "content cannot be null or undefined";
+        if (!content) throw "content cannot be null or undefined";
 
         this.children = [];
         this.arcs = [];
-        this.content = content;
+        this._content = content;
     }
 
     /**
@@ -32,7 +32,7 @@ export class Node {
      * @readonly
      * @memberof Node
      */
-    get content() { return this.content; }
+    get content() { return this._content; }
 
     /**
      * Gets the id of the content.
@@ -40,7 +40,7 @@ export class Node {
      * @readonly
      * @memberof Node
      */
-    get id() { return this.content.id; }
+    get id() { return this._content.id; }
 
     /**
      * Gets the first child and arc. If no children is present, null is returned.
