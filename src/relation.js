@@ -14,14 +14,17 @@ export class Relation {
      * Creates an instance of Relation.
      * @param {Box} lhs 
      * @param {Box} rhs 
+     * @param {any} type 
      * @memberof Relation
      */
-    constructor(lhs, rhs) {
+    constructor(lhs, rhs, type) {
         if (!lhs) throw "lhs cannot be null or undefined";
         if (!rhs) throw "rhs cannot be null or undefined";
+        if (!type) type = Relation.D;
 
-        this.lhs = lhs;
-        this.rhs = rhs;
+        this._lhs = lhs;
+        this._rhs = rhs;
+        this._type = type;
     }
 
     /**
@@ -30,7 +33,7 @@ export class Relation {
      * @readonly
      * @memberof Relation
      */
-    get rhs() { return this.rhs; }
+    get rhs() { return this._rhs; }
 
     /**
      * Gets the LHS.
@@ -38,7 +41,15 @@ export class Relation {
      * @readonly
      * @memberof Relation
      */
-    get lhs() { return this.lhs; }
+    get lhs() { return this._lhs; }
+
+    /**
+     * Gets the type of relation.
+     * 
+     * @readonly
+     * @memberof Relation
+     */
+    get type() { return this._type; }
 
     /**
      * Gets the value for DOWN relation type.

@@ -41,9 +41,21 @@ export class Table2Tree {
             this.parentChildDict = populateParentChildDict(this.table);
 
         let keys = Object.keys(this.childParentDict);
+
+        /*
+         * From whatever node, the childParent dictionary is used to 
+         * traverse up until a node is found which does not figure 
+         * in the keys of the dictionary.
+         * Recursive function.
+         */
+        let locateRoot = function(id) {
+            let next = this.childParentDict[id];
+            return next ? locateRoot(next.id) : id;
+        };
+
         for (let i = 0; i < keys.length; i++) {
             let parent = this.childParentDict[keys[i]]; // Box
-            let child = this.parentChildDict[keys[i]]; // Box
+            let child = this.parentChildDict[keys[i]]; // Box (should look in table)
 
             // Generate nodes and index them
             if (!this.nodes[parent.id])
@@ -55,7 +67,7 @@ export class Table2Tree {
             this.nodes[parent.id].addChild(this.nodes[child.id], new tree.Arc());
         }
 
-        return null;
+        return locateRoot(keys[0]);
     }
 }
 

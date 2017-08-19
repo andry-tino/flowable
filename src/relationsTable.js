@@ -17,6 +17,7 @@ export class RelationsTable {
      */
     constructor() {
         this.relations = [];
+        this.boxes = {}; // We keep a dictionary of boxes: id -> box
     }
 
     /**
@@ -27,7 +28,28 @@ export class RelationsTable {
      */
     add(relation) {
         if (!relation) throw "relation cannot be null or undefined";
+        if (!relation.rhs) throw "relation's RHS cannot be null or undefined";
+        if (!relation.lhs) throw "relation's LHS cannot be null or undefined";
+
         this.relations.push(relation);
+        
+        if (!this.boxes[relation.rhs.id]) this.boxes[relation.rhs.id] = relation.rhs;
+        if (!this.boxes[relation.lhs.id]) this.boxes[relation.lhs.id] = relation.lhs;
+    }
+
+    /**
+     * Gets a box by providing the id.
+     * 
+     * @param {String} id 
+     * @memberof RelationsTable
+     */
+    getBox(id) {
+        if (!id) throw "id cannot be null or undefined";
+
+        let box = this.boxes[id];
+        if (!box) return null;
+
+        return box;
     }
 
     /**
@@ -44,7 +66,7 @@ export class RelationsTable {
     }
 
     /**
-     * Gets the length of the table.
+     * Gets the length of the table (number of relations).
      * 
      * @readonly
      * @memberof RelationsTable

@@ -6,6 +6,7 @@
 import * as components from "../../src/box";
 
 describe("TestSuite for Box", function() {
+    
     let box = new components.Box();
 
     it("Random id generation", function() {
