@@ -55,22 +55,41 @@ describe("TestSuite for Node", function() {
 
         node.addChild(child, new components.Arc());
 
-        expect(node.firstChild).toBeTruthy();
-        expect(node.lastChild).toBeTruthy();
-        expect(node.child(1)).toBeTruthy();
-
-        expect(node.firstChild.node).toBeTruthy();
-        expect(node.lastChild.node).toBeTruthy();
-        expect(node.child(1).node).toBeTruthy();
-
-        expect(node.firstChild.node.id).toBeTruthy();
-        expect(node.lastChild.node.id).toBeTruthy();
-        expect(node.child(1).node.id).toBeTruthy();
-        expect(node.firstChild.node.id).toEqual("box-000001");
-        expect(node.lastChild.node.id).toEqual("box-000001");
-        expect(node.child(1).node.id).toEqual("box-000001");
+        testFirstChild(node, "box-000001");
+        testLastChild(node, "box-000001");
+        testNthChild(node, 1, "box-000001");
 
         expect(node.count).toEqual(1);
+    });
+
+    it("Two children", function() {
+        let node = new components.Node(new boxes.Box("box-000000"));
+        let child1 = new components.Node(new boxes.Box("box-000001"));
+        let child2 = new components.Node(new boxes.Box("box-000002"));
+
+        node.addChild(child1, new components.Arc());
+        node.addChild(child2, new components.Arc());
+
+        testFirstChild(node, "box-000001");
+        testLastChild(node, "box-000002");
+        testNthChild(node, 1, "box-000001");
+        testNthChild(node, 2, "box-000002");
+
+        expect(node.count).toEqual(2);
+    });
+
+    it("Get child out of bounds", function() {
+        let node = new components.Node(new boxes.Box("box-000000"));
+        let child1 = new components.Node(new boxes.Box("box-000001"));
+        let child2 = new components.Node(new boxes.Box("box-000002"));
+
+        node.addChild(child1, new components.Arc());
+        node.addChild(child2, new components.Arc());
+
+        expect(node.child(0)).toBeNull();
+        expect(node.child(1)).not.toBeNull();
+        expect(node.child(2)).not.toBeNull();
+        expect(node.child(3)).toBeNull();
     });
 
 });
@@ -84,3 +103,24 @@ describe("TestSuite for Arc", function() {
     });
 
 });
+
+function testFirstChild(node, expectedId) {
+    expect(node.firstChild).toBeTruthy();
+    expect(node.firstChild.node).toBeTruthy();
+    expect(node.firstChild.node.id).toBeTruthy();
+    expect(node.firstChild.node.id).toEqual(expectedId);
+}
+
+function testLastChild(node, expectedId) {
+    expect(node.lastChild).toBeTruthy();
+    expect(node.lastChild.node).toBeTruthy();
+    expect(node.lastChild.node.id).toBeTruthy();
+    expect(node.lastChild.node.id).toEqual(expectedId);
+}
+
+function testNthChild(node, n, expectedId) {
+    expect(node.child(n)).toBeTruthy();
+    expect(node.child(n).node).toBeTruthy();
+    expect(node.child(n).node.id).toBeTruthy();
+    expect(node.child(n).node.id).toEqual(expectedId);
+}

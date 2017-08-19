@@ -72,7 +72,7 @@ export class Node {
      * @memberof Node
      */
     child(n) {
-        return this.children.length === 0 || this.children.length > n 
+        return this.children.length === 0 || n > this.children.length || n <= 0
             ? null 
             : new ChildInfo(this.children[n - 1], this.arcs[n - 1]);
     }
