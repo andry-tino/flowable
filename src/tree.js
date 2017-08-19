@@ -96,8 +96,8 @@ export class Node {
      * @memberof Node
      */
     addChild(node, arc) {
-        if (!node) return;
-        if (!arc) return;
+        if (!node) throw "node cannot be null or undefined";
+        if (!arc) throw "node cannot be null or undefined";
 
         this.children.push(node);
         this.arcs.push(arc);
