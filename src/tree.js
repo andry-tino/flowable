@@ -74,7 +74,17 @@ export class Node {
     child(n) {
         return this.children.length === 0 || this.children.length > n 
             ? null 
-            : new ChildInfo(this.children[n + 1], this.arcs[n + 1]);
+            : new ChildInfo(this.children[n - 1], this.arcs[n - 1]);
+    }
+    
+    /**
+     * Gets the number of children.
+     * 
+     * @readonly
+     * @memberof Node
+     */
+    get count() {
+        return this.children.length;
     }
 
     /**
@@ -111,8 +121,8 @@ export class ChildInfo {
         if (!node) throw "node cannot be null or undefined";
         if (!arc) throw "arc cannot be null or underfined";
 
-        this.node = node;
-        this.arc = arc;
+        this._node = node;
+        this._arc = arc;
     }
 
     /**
@@ -121,7 +131,7 @@ export class ChildInfo {
      * @readonly
      * @memberof ChildInfo
      */
-    get node() { return this.node; }
+    get node() { return this._node; }
 
     /**
      * Gets the arc.
@@ -129,7 +139,7 @@ export class ChildInfo {
      * @readonly
      * @memberof ChildInfo
      */
-    get arc() { return this.arc; }
+    get arc() { return this._arc; }
 }
 
 /**
@@ -141,13 +151,13 @@ export class ChildInfo {
 export class Arc {
     /**
      * Creates an instance of Arc.
-     * @param {any} type 
+     * @param {Number} type 
      * @memberof Arc
      */
     constructor(type) {
         if (!type) type = Arc.D;
 
-        this.type = type;
+        this._type = type;
     }
 
     /**
@@ -192,5 +202,5 @@ export class Arc {
      * @readonly
      * @memberof Arc
      */
-    get type() { return this.type; }
+    get type() { return this._type; }
 }

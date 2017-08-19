@@ -19,6 +19,13 @@ describe("TestSuite for Box", function() {
         expect(box.id.length).toEqual(10);
     });
 
+    it("Construct with id", function() {
+        let namedBox = new components.Box("box-000000");
+
+        expect(namedBox.id).toBeTruthy();
+        expect(namedBox.id).toEqual("box-000000");
+    });
+
     it("Multiple random id generation", function() {
         for (let i = 0; i < 100; i++) {
             let box = new components.Box();

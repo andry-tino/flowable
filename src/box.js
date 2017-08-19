@@ -14,8 +14,12 @@ export class Box {
      * Creates an instance of Box.
      * @memberof Box
      */
-    constructor() {
-        this._id = generateId();
+    constructor(id) {
+        if (!id) {
+            id = generateId();
+        }
+
+        this._id = id;
         this._width = 0;
         this._height = 0;
         this._x = 0;
