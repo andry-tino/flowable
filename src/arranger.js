@@ -26,7 +26,38 @@ export class Arranger {
 
         this.table = table;
         this.root = null; // The root of the tree
+
+        this._marginX = 10; // In pixels
+        this._marginY = 10; // In pixels
     }
+
+    /**
+     * Gets the horizontal margin.
+     * 
+     * @memberof Arranger
+     */
+    get marginX() { return this._marginX; }
+
+    /**
+     * Sets the horizontal margin.
+     * 
+     * @memberof Arranger
+     */
+    set marginX(value) { this._marginX = value; }
+
+    /**
+     * Gets the vertical margin.
+     * 
+     * @memberof Arranger
+     */
+    get marginY() { return this._marginY; }
+
+    /**
+     * Sets the vertical margin.
+     * 
+     * @memberof Arranger
+     */
+    set marginY(value) { this._marginY = value; }
 
     /**
      * Runs the algorithm.
@@ -44,9 +75,6 @@ export class Arranger {
             minX = 0,
             maxY = 0,
             minY = 0;
-        
-        const marginX = 10; // In pixels
-        const marginY = 10; // In pixels
 
         // Here we should have the tree
         let traverser = new TreeTraverser(this.root);
@@ -82,7 +110,7 @@ export class Arranger {
                 box.y = maxY;
 
                 // Update position variable
-                maxY += (box.height + marginY);
+                maxY += (box.height + this.marginY);
 
                 return;
             }
@@ -92,7 +120,7 @@ export class Arranger {
                 box.y = minY;
 
                 // Update position variable
-                minY -= (box.height + marginY);
+                minY -= (box.height + this.marginY);
 
                 return;
             }
@@ -102,7 +130,7 @@ export class Arranger {
                 box.x = maxX;
 
                 // Update position variable
-                maxX += (box.width + marginX);
+                maxX += (box.width + this.marginX);
 
                 return;
             }
@@ -112,7 +140,7 @@ export class Arranger {
                 box.x = minX;
 
                 // Update position variable
-                minX -= (box.width + marginX);
+                minX -= (box.width + this.marginX);
 
                 return;
             }

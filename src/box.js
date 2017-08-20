@@ -58,7 +58,7 @@ export class Box {
      * @memberof Box
      */
     set width(value) { 
-        if (!value) throw "Invalid value";
+        if (!Number.isInteger(value)) throw `Invalid value ${value} for property width`;
         if (!checkValue(value)) throw "Value must be a positive (or null) integer";
 
         this._width = value;
@@ -78,7 +78,7 @@ export class Box {
      * @memberof Box
      */
     set height(value) { 
-        if (!value) throw "Invalid value";
+        if (!Number.isInteger(value)) throw `Invalid value ${value} for property height`;
         if (!checkValue(value)) throw "Value must be a positive (or null) integer";
 
         this._height = value;
@@ -98,7 +98,7 @@ export class Box {
      * @memberof Box
      */
     set x(value) { 
-        if (!value) throw "Invalid value";
+        if (!Number.isInteger(value)) throw `Invalid value ${value} for property x`;
         if (!checkValue(value)) throw "Value must be a positive (or null) integer";
 
         this._x = value;
@@ -118,7 +118,7 @@ export class Box {
      * @memberof Box
      */
     set y(value) { 
-        if (!value) throw "Invalid value"; 
+        if (!Number.isInteger(value)) throw `Invalid value ${value} for property y`; 
         if (!checkValue(value)) throw "Value must be a positive (or null) integer";
 
         this._y = value;
@@ -132,7 +132,7 @@ export class Box {
  * @returns 
  */
 function checkValue(value) {
-    if (!value) return false;
+    if (!Number.isInteger(value)) return false;
 
     return Number.isInteger(value) && value >= 0;
 }
