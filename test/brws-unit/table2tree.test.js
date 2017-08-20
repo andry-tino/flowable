@@ -13,6 +13,50 @@ import * as treeTraversalUtils from "../utils/treeTraverser";
 
 describe("TestSuite for conversion from table to tree", function() {
 
+    it("Nodes encapsulating boxes keep references to boxes", function() {
+        let table = new tables.RelationsTable();
+
+        let box0 = new boxes.Box("box-000000");
+        let box1 = new boxes.Box("box-000001");
+
+        // Adding relations
+        table.add(new relations.Relation(box0, box1));
+
+        // Convert
+        var root = new treeTableConversions.Table2Tree(table).convert();
+
+        /*
+         * The boxes encapsulated in the nodes are the same references to 
+         * the initial boxes, no dulication involved
+         */
+        expect(root).toBeTruthy();
+        expect(root.id).toEqual("box-000000");
+        expect(root.content == box0).toEqual(true);
+
+        expect(root.firstChild).toBeTruthy();
+        expect(root.firstChild.node.id).toEqual("box-000001");
+        expect(root.firstChild.node.content == box1).toEqual(true);
+    });
+
+    it("Linear tree with two nodes", function() {
+        let table = new tables.RelationsTable();
+
+        let box0 = new boxes.Box("box-000000");
+        let box1 = new boxes.Box("box-000001");
+
+        // Adding relations
+        table.add(new relations.Relation(box0, box1));
+
+        // Convert
+        var root = new treeTableConversions.Table2Tree(table).convert();
+
+        // Root should be correctly identified
+        expect(root).toBeTruthy();
+        expect(root.id).toEqual("box-000000");
+
+        testTreeTraverse(root, "box-000000;box-000001;", 2);
+    });
+    
     it("Linear tree", function() {
         let table = new tables.RelationsTable();
 
