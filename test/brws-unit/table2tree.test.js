@@ -11,7 +11,7 @@ import * as relations from "../../src/relation";
 
 import * as treeTraversalUtils from "../utils/treeTraverser";
 
-describe("TestSuite for Node", function() {
+describe("TestSuite for conversion from table to tree", function() {
 
     it("Linear tree", function() {
         let table = new tables.RelationsTable();
@@ -28,6 +28,10 @@ describe("TestSuite for Node", function() {
 
         // Convert
         var root = new treeTableConversions.Table2Tree(table).convert();
+
+        // Root should be correctly identified
+        expect(root).toBeTruthy();
+        expect(root.id).toEqual("box-000000");
 
         testTreeTraverse(root, "box-000000;box-000001;box-000002;box-000003;", 4);
     });

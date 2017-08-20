@@ -48,14 +48,17 @@ export class Table2Tree {
          * in the keys of the dictionary.
          * Recursive function.
          */
-        let locateRoot = function(id) {
-            let next = this.childParentDict[id];
-            return next ? locateRoot(next.id) : id;
+        let locateRoot = function(id, childParentDict, nodes) {
+            let next = childParentDict[id];
+            return next ? locateRoot(next.id, childParentDict, nodes) : nodes[id];
         };
 
         for (let i = 0; i < keys.length; i++) {
             let parent = this.childParentDict[keys[i]]; // Box
-            let child = this.parentChildDict[keys[i]]; // Box (should look in table)
+            let child = this.table.getBox(keys[i]); // Box
+
+            if (!parent) throw `Parent box should be found for key: ${keys[i]}`;
+            if (!child) throw `Child box should be found for key: ${keys[i]}`;
 
             // Generate nodes and index them
             if (!this.nodes[parent.id])
@@ -67,7 +70,7 @@ export class Table2Tree {
             this.nodes[parent.id].addChild(this.nodes[child.id], new tree.Arc());
         }
 
-        return locateRoot(keys[0]);
+        return locateRoot(keys[0], this.childParentDict, this.nodes);
     }
 }
 
