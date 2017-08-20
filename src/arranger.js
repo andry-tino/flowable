@@ -45,7 +45,8 @@ export class Arranger {
             maxY = 0,
             minY = 0;
         
-        const margin = 10; // In pixels
+        const marginX = 10; // In pixels
+        const marginY = 10; // In pixels
 
         // Here we should have the tree
         let traverser = new TreeTraverser(this.root);
@@ -81,7 +82,7 @@ export class Arranger {
                 box.y = maxY;
 
                 // Update position variable
-                maxY += box.height;
+                maxY += (box.height + marginY);
 
                 return;
             }
@@ -91,7 +92,7 @@ export class Arranger {
                 box.y = minY;
 
                 // Update position variable
-                minY -= box.height;
+                minY -= (box.height + marginY);
 
                 return;
             }
@@ -101,7 +102,7 @@ export class Arranger {
                 box.x = maxX;
 
                 // Update position variable
-                maxX += box.width;
+                maxX += (box.width + marginX);
 
                 return;
             }
@@ -111,7 +112,7 @@ export class Arranger {
                 box.x = minX;
 
                 // Update position variable
-                minX -= box.width;
+                minX -= (box.width + marginX);
 
                 return;
             }
