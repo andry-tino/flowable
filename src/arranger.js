@@ -90,6 +90,9 @@ export class Arranger {
             // TODO: Add checks for dimensions
         });
 
+        let my = this.marginY;
+        let mx = this.marginX;
+
         // Arrange
         traverser.traverse(function(node, type) {
             let box = node.content;
@@ -97,10 +100,10 @@ export class Arranger {
 
             if (type === -1) { // Current node is the root
                 // Update position variable
-                maxX += box.width;
-                maxY += box.height;
-                minX += 0;
-                minY += 0;
+                maxX += (box.width + mx);
+                maxY += (box.height + my);
+                minX -= (0 + mx);
+                minY -= (0 + my);
 
                 return;
             }
@@ -110,7 +113,7 @@ export class Arranger {
                 box.y = maxY;
 
                 // Update position variable
-                maxY += (box.height + this.marginY);
+                maxY += (box.height + my);
 
                 return;
             }
@@ -120,7 +123,7 @@ export class Arranger {
                 box.y = minY;
 
                 // Update position variable
-                minY -= (box.height + this.marginY);
+                minY -= (box.height + my);
 
                 return;
             }
@@ -130,7 +133,7 @@ export class Arranger {
                 box.x = maxX;
 
                 // Update position variable
-                maxX += (box.width + this.marginX);
+                maxX += (box.width + mx);
 
                 return;
             }
@@ -140,7 +143,7 @@ export class Arranger {
                 box.x = minX;
 
                 // Update position variable
-                minX -= (box.width + this.marginX);
+                minX -= (box.width + mx);
 
                 return;
             }
@@ -197,11 +200,12 @@ class TreeTraverser {
  * @param {any} node 
  * @param {any} type 
  * @param {any} action 
- * @returns 
  */
 function traverseRec(node, type, action) {
-    if (!node) return;
-    if (!type) return;
+    if (!node) throw "node cannot be null or undefined";
+    if (!Number.isInteger(type)) throw "type not valid";
+
+    console.log("BBB", node, node.id);
 
     // Execute action
     action(node, type);
@@ -215,6 +219,8 @@ function traverseRec(node, type, action) {
         if (!arc) throw "Missing arc info";
 
         let relationType = arc.type;
+
+        console.log("  -Child", child, child.id);
 
         traverseRec(child, relationType, action);
     }
