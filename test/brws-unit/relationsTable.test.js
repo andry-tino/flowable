@@ -3,9 +3,9 @@
  * Andrea Tino - 2017
  */
 
-import * as tables from "../../src/relationsTable";
-import * as boxes from "../../src/box";
-import * as relations from "../../src/relation";
+import * as tables from "../../src/relationsTable.js";
+import * as boxes from "../../src/box.js";
+import * as relations from "../../src/relation.js";
 
 describe("TestSuite for RelationsTable", function() {
 

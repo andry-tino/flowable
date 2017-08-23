@@ -3,8 +3,8 @@
  * Andrea Tino - 2017
  */
 
-import * as components from "../../src/tree";
-import * as boxes from "../../src/box";
+import * as components from "../../src/tree.js";
+import * as boxes from "../../src/box.js";
 
 describe("TestSuite for Node", function() {
 

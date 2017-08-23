@@ -3,10 +3,10 @@
  * Andrea Tino - 2017
  */
 
-import * as components from "../../src/tree";
-import * as boxes from "../../src/box";
+import * as components from "../../src/tree.js";
+import * as boxes from "../../src/box.js";
 
-import * as treeTraversalUtils from "../utils/treeTraverser";
+import * as treeTraversalUtils from "../utils/treeTraverser.js";
 
 describe("TestSuite targeting composition of trees", function() {
 

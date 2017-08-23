@@ -3,10 +3,10 @@
  * Andrea Tino - 2017
  */
 
-import * as components from "../../src/arranger";
-import * as boxes from "../../src/box";
-import * as tables from "../../src/relationsTable";
-import * as relations from "../../src/relation";
+import * as components from "../../src/arranger.js";
+import * as boxes from "../../src/box.js";
+import * as tables from "../../src/relationsTable.js";
+import * as relations from "../../src/relation.js";
 
 describe("TestSuite for Arranger", function() {
 

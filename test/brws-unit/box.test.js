@@ -3,7 +3,7 @@
  * Andrea Tino - 2017
  */
 
-import * as components from "../../src/box";
+import * as components from "../../src/box.js";
 
 describe("TestSuite for Box", function() {
     

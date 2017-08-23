@@ -3,13 +3,13 @@
  * Andrea Tino - 2017
  */
 
-import * as components from "../../src/tree";
-import * as boxes from "../../src/box";
-import * as treeTableConversions from "../../src/table2tree";
-import * as tables from "../../src/relationsTable";
-import * as relations from "../../src/relation";
+import * as components from "../../src/tree.js";
+import * as boxes from "../../src/box.js";
+import * as treeTableConversions from "../../src/table2tree.js";
+import * as tables from "../../src/relationsTable.js";
+import * as relations from "../../src/relation.js";
 
-import * as treeTraversalUtils from "../utils/treeTraverser";
+import * as treeTraversalUtils from "../utils/treeTraverser.js";
 
 describe("TestSuite for conversion from table to tree", function() {
 
