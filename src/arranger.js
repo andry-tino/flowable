@@ -205,8 +205,6 @@ function traverseRec(node, type, action) {
     if (!node) throw "node cannot be null or undefined";
     if (!Number.isInteger(type)) throw "type not valid";
 
-    console.log("BBB", node, node.id);
-
     // Execute action
     action(node, type);
 
@@ -219,8 +217,6 @@ function traverseRec(node, type, action) {
         if (!arc) throw "Missing arc info";
 
         let relationType = arc.type;
-
-        console.log("  -Child", child, child.id);
 
         traverseRec(child, relationType, action);
     }

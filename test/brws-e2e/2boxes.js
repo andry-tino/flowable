@@ -25,8 +25,8 @@ window.addEventListener("load", function() {
     let box1Element = document.getElementById("box1");
     box0Element.style.top = `${box0.y}px`;
     box0Element.style.left = `${box0.x}px`;
-    console.log("box0", box0.x, box0.y);
+    console.log("Calculated coordinates", "box0", box0.x, box0.y);
     box1Element.style.top = `${box1.y}px`;
     box1Element.style.left = `${box1.x}px`;
-    console.log("box1", box1.x, box1.y);
+    console.log("Calculated coordinates", "box1", box1.x, box1.y);
 });
