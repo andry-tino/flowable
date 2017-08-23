@@ -3,8 +3,8 @@
  * Andrea Tino - 2017
  */
 
-import * as relationsTable from "./relationsTable";
-import * as tree from "./tree";
+import * as relationsTable from "./relationsTable.js";
+import * as tree from "./tree.js";
 
 /**
  * Converts a table into a tree.

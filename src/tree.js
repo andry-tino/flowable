@@ -3,7 +3,7 @@
  * Andrea Tino - 2017
  */
 
-import * as relation from "./relation";
+import * as relation from "./relation.js";
 
 /**
  * Describes a node in the tree.

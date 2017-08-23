@@ -3,9 +3,9 @@
  * Andrea Tino - 2017
  */
 
-import * as relationsTable from "./relationsTable";
-import * as treeTableConversions from "./table2tree";
-import * as tree from "./tree";
+import * as relationsTable from "./relationsTable.js";
+import * as treeTableConversions from "./table2tree.js";
+import * as tree from "./tree.js";
 
 /**
  * Describes the arranging algorithm.
