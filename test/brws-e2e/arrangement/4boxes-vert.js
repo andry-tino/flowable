@@ -1,7 +1,7 @@
-import * as components from "../../src/arranger.js";
-import * as boxes from "../../src/box.js";
-import * as tables from "../../src/relationsTable.js";
-import * as relations from "../../src/relation.js";
+import * as components from "../../../src/arranger.js";
+import * as boxes from "../../../src/box.js";
+import * as tables from "../../../src/relationsTable.js";
+import * as relations from "../../../src/relation.js";
 
 window.addEventListener("load", function() {
     let table = new tables.RelationsTable();
