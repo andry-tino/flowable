@@ -1,7 +1,8 @@
-import * as connecting from "../../../src/connector.js";
+import snap from "snapsvg";
+import * as conn from "../../../src/connector.js";
 
 window.addEventListener("load", function() {
-    //let connector = new connecting.Connector(document.body);
+    let connector = new conn.Connector(document.body);
 
-    //connector.connect({ x: 50, y: 100 }, { x: 50, y: 150 });
+    connector.connect({ x: 50, y: 100 }, { x: 50, y: 150 });
 });

@@ -3,7 +3,6 @@
  * Andrea Tino - 2017
  */
 
-import * as two from "two.js";
 import * as blocks from "./box.js";
 
 /**
@@ -20,11 +19,13 @@ export class Connector {
     constructor(element) {
         if (!element) throw "element cannot be null or undefined";
 
+        /*
         this.twoctx = new two.Two({
             type: "svg",
             fullscreen: true
         });
         this.twoctx.appendTo(element);
+        */
     }
 
     /**
@@ -38,8 +39,8 @@ export class Connector {
         if (!box1) throw "box1 cannot be null or undefined";
         if (!box2) throw "box2 cannot be null or undefined";
 
-        let line = this.twoctx.makeLine(box1.x, box1.y, box2.x, box2.y);
+        //let line = this.twoctx.makeLine(box1.x, box1.y, box2.x, box2.y);
 
-        this.twoctx.update();
+        //this.twoctx.update();
     }
 }
