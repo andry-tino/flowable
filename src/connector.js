@@ -23,34 +23,55 @@ export class Connector {
     /**
      * Connects two boxes via a line.
      * 
-     * @param {any} box1 
-     * @param {any} box2 
+     * @param {Box} A 
+     * @param {Box} B 
      * @memberof Connector
      */
-    connect(box1, box2) {
-        if (!box1) throw "box1 cannot be null or undefined";
-        if (!box2) throw "box2 cannot be null or undefined";
+    connect(A, B) {
+        if (!A) throw "A cannot be null or undefined";
+        if (!B) throw "B cannot be null or undefined";
 
-        // From box1 bottom middle to box2 top middle
-        let startx = Math.floor(box1.width / 2) + box1.x;
-        let starty = box1.height + box1.y;
-        let endx = Math.floor(box2.width / 2) + box2.x;
-        let endy = box2.y;
-        let w = Math.abs(startx - endx);
-        let h = Math.abs(starty - endy);
-
-        let svg = snap(w, h);
-        svg.attr({ id: "l1" });
-
-        let svgElement = document.getElementById("l1");
-        svgElement.style.position = "absolute";
-        svgElement.style.top = `${startx}px`;
-        svgElement.style.left = `${starty}px`;
-
-        let line = svg.line(0, 0, w, h);
-        line.attr({
-            "stroke": "#000",
-            "stroke-width": "2"
-        });
+        let element = connect_a_top_b_bottom(A, B);
     }
+}
+
+/**
+ * Connects two boxes.
+ * 
+ * @param {Box} A 
+ * @param {Box} B 
+ * @return {Element} The svg element
+ */
+function connect_a_top_b_bottom(A, B) {
+    let xa1 = A.x;
+    let ya1 = A.y;
+    let xb1 = B.x;
+    let yb1 = B.y;
+
+    let xa2 = xa1 + A.width;
+    let ya2 = ya1 + A.height;
+    let xb2 = xb1 + B.width;
+    let yb2 = yb1 + B.height;
+
+    let w = Math.abs(xb1 - xa1);
+    let h = Math.abs(yb1 - ya2);
+
+    let x = xa1 + Math.floor(A.width / 2);
+    let y = ya2;
+
+    let svg = snap(w, h);
+    svg.attr({ id: "l1" });
+
+    let svgElement = document.getElementById("l1");
+    svgElement.style.position = "absolute";
+    svgElement.style.top = `${y}px`;
+    svgElement.style.left = `${x}px`;
+
+    let line = svg.line(0, 0, w, h);
+    line.attr({
+        "stroke": "#000",
+        "stroke-width": "2"
+    });
+
+    return svgElement;
 }
