@@ -31,7 +31,25 @@ export class Connector {
         if (!A) throw "A cannot be null or undefined";
         if (!B) throw "B cannot be null or undefined";
 
-        let element = connect_a_top_b_bottom(A, B);
+        if (B.y >= A.y && B.x >= A.x) {
+            let element = connect_a_top_left_b_bottom_right(A, B);
+            return;
+        }
+
+        if (B.y >= A.y && B.x < A.x) {
+            let element = connect_a_top_right_b_bottom_left(A, B);
+            return;
+        }
+
+        if (B.y < A.y && B.x <= A.x) {
+            let element = connect_a_bottom_right_b_top_left(A, B);
+            return;
+        }
+
+        if (B.y < A.y && B.x > A.x) {
+            let element = connect_a_bottom_left_b_top_right(A, B);
+            return;
+        }
     }
 }
 
@@ -42,36 +60,94 @@ export class Connector {
  * @param {Box} B 
  * @return {Element} The svg element
  */
-function connect_a_top_b_bottom(A, B) {
-    let xa1 = A.x;
-    let ya1 = A.y;
-    let xb1 = B.x;
-    let yb1 = B.y;
+function connect_a_top_left_b_bottom_right(A, B) {
+    let q = quantities(A, B);
 
-    let xa2 = xa1 + A.width;
-    let ya2 = ya1 + A.height;
-    let xb2 = xb1 + B.width;
-    let yb2 = yb1 + B.height;
+    let x = q.xa1 + Math.floor(A.width / 2);
+    let y = q.ya2;
 
-    let w = Math.abs(xb1 - xa1);
-    let h = Math.abs(yb1 - ya2);
+    return generateLine(q.w, q.h, y, x, 0, 0, q.w, q.h);
+}
 
-    let x = xa1 + Math.floor(A.width / 2);
-    let y = ya2;
+/**
+ * Connects two boxes.
+ * 
+ * @param {Box} A 
+ * @param {Box} B 
+ * @return {Element} The svg element
+ */
+function connect_a_top_right_b_bottom_left(A, B) {
+    let q = quantities(A, B);
 
+    let x = q.xb1 + Math.floor(B.width / 2);
+    let y = q.ya2;
+
+    return generateLine(q.w, q.h, y, x, 0, q.h, q.w, 0);
+}
+
+/**
+ * Connects two boxes.
+ * 
+ * @param {Box} A 
+ * @param {Box} B 
+ * @return {Element} The svg element
+ */
+function connect_a_bottom_right_b_top_left(A, B) {
+    return connect_a_top_left_b_bottom_right(B, A);
+}
+
+/**
+ * Connects two boxes.
+ * 
+ * @param {Box} A 
+ * @param {Box} B 
+ * @return {Element} The svg element
+ */
+function connect_a_bottom_left_b_top_right(A, B) {
+    return connect_a_top_right_b_bottom_left(B, A);
+}
+
+function quantities(A, B) {
+    return {
+        xa1: A.x,
+        ya1: A.y,
+        xb1: B.x,
+        yb1: B.y,
+        xa2: A.x + A.width,
+        ya2: A.y + A.height,
+        xb2: B.x + B.width,
+        yb2: B.y + B.height,
+        w: Math.abs(B.x - A.x),
+        h: Math.abs(B.y - (A.y + A.height)),
+        w1: Math.abs(B.x - A.x),
+        h1: Math.abs(B.y + B.height - A.y)
+    }
+}
+
+function generateLine(w, h, top, left, l1, l2, l3, l4) {
     let svg = snap(w, h);
-    svg.attr({ id: "l1" });
+    let svgId = `conn${generateId()}`;
+    svg.attr({ id: svgId });
 
-    let svgElement = document.getElementById("l1");
+    let svgElement = document.getElementById(svgId);
     svgElement.style.position = "absolute";
-    svgElement.style.top = `${y}px`;
-    svgElement.style.left = `${x}px`;
+    svgElement.style.top = `${top}px`;
+    svgElement.style.left = `${left}px`;
 
-    let line = svg.line(0, 0, w, h);
+    let line = svg.line(l1, l2, l3, l4);
     line.attr({
         "stroke": "#000",
         "stroke-width": "2"
     });
 
     return svgElement;
+}
+
+function generateId() {
+    let letters = '0123456789abcdef'.split('');
+    let r = 'box-';
+    for (let i = 0; i < 6; i++) {
+        r += letters[Math.floor(Math.random() * 10)];
+    }
+    return r;
 }

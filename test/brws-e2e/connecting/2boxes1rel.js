@@ -3,13 +3,20 @@ import * as conn from "../../../src/connector.js";
 import * as boxes from "../../../src/box.js";
 
 window.addEventListener("load", function() {
-    let connector = new conn.Connector(document.body);
+    create2Boxes1Rel("box10", "box11");
+    create2Boxes1Rel("box20", "box21");
+    create2Boxes1Rel("box30", "box31");
+    create2Boxes1Rel("box40", "box41");
+});
 
-    let box0 = createBox("box0");
-    let box1 = createBox("box1");
+function create2Boxes1Rel(id0, id1) {
+    let connector = new conn.Connector();
+
+    let box0 = createBox(id0);
+    let box1 = createBox(id1);
 
     connector.connect(box0, box1);
-});
+}
 
 function createBox(id) {
     let box = new boxes.Box();
