@@ -3,10 +3,10 @@ import * as conn from "../../../src/connector.js";
 import * as boxes from "../../../src/box.js";
 
 window.addEventListener("load", function() {
-    //create2Boxes1Rel("box10", "box11");
-    //create2Boxes1Rel("box20", "box21");
-    //create2Boxes1Rel("box30", "box31");
-    //create2Boxes1Rel("box40", "box41");
+    create2Boxes1Rel("box10", "box11");
+    create2Boxes1Rel("box20", "box21");
+    create2Boxes1Rel("box30", "box31");
+    create2Boxes1Rel("box40", "box41");
 });
 
 function create2Boxes1Rel(id0, id1) {

@@ -32,26 +32,44 @@ export class Connector {
         if (!B) throw "B cannot be null or undefined";
 
         if (B.y >= A.y + A.height && B.x >= A.x + A.width) {
-            console.log("connector", "running B.y >= A.y && B.x >= A.x");
+            console.log("connector", "running B.y >= A.y + A.height && B.x >= A.x + A.widt");
             let element = connect_a_top_left_b_bottom_right(A, B);
             return;
         }
 
         if (B.y >= A.y + A.height && B.x + B.width <= A.x) {
-            console.log("connector", "running B.y >= A.y && B.x < A.x");
+            console.log("connector", "running B.y >= A.y + A.height && B.x + B.width <= A.x");
             let element = connect_a_top_right_b_bottom_left(A, B);
             return;
         }
 
         if (B.y + B.height <= A.y && B.x + B.width <= A.x) {
-            console.log("connector", "running B.y < A.y && B.x <= A.x");
+            console.log("connector", "running B.y + B.height <= A.y && B.x + B.width <= A.xx");
             let element = connect_a_bottom_right_b_top_left(A, B);
             return;
         }
 
         if (B.y + B.height < A.y && B.x >= A.x + A.width) {
-            console.log("connector", "running B.y < A.y && B.x > A.x");
+            console.log("connector", "running B.y + B.height < A.y && B.x >= A.x + A.width");
             let element = connect_a_bottom_left_b_top_right(A, B);
+            return;
+        }
+
+        if (B.x >= A.x + A.width && B.y < A.y + A.height) {
+            console.log("connector", "running B.x >= A.x + A.width && B.y < A.y + A.height", "not implemented");
+            return;
+        }
+        if (B.x >= A.x + A.width && B.y + B.height < A.y) { // Useless, covered by previous, here for safety
+            console.log("connector", "running B.x >= A.x + A.width && B.y + B.height < A.y", "not implemented");
+            return;
+        }
+
+        if (B.x + B.width <= A.x && B.y < A.y + A.height) {
+            console.log("connector", "running B.x + B.width <= A.x && B.y < A.y + A.height", "not implemented");
+            return;
+        }
+        if (B.x + B.width <= A.x && B.y + B.height < A.y) { // Useless, covered by previous, here for safety
+            console.log("connector", "running B.x + B.width <= A.x && B.y + B.height < A.y", "not implemented");
             return;
         }
 
