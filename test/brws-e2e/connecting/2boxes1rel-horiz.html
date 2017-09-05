@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Flowable E2E test - 2 boxes 1 relation (horizontal)</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        div {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            font-size: 2em;
+        }
+        #box10 { background-color: #DEBAB8; top: 50px; left: 50px; }
+        #box11 { background-color: #B0ABB9; top: 200px; left: 200px; }
+        #box20 { background-color: #DEBAB8; top: 50px; left: 600px; }
+        #box21 { background-color: #B0ABB9; top: 200px; left: 450px; }
+        #box30 { background-color: #DEBAB8; top: 550px; left: 50px; }
+        #box31 { background-color: #B0ABB9; top: 400px; left: 200px; }
+        #box40 { background-color: #DEBAB8; top: 550px; left: 600px; }
+        #box41 { background-color: #B0ABB9; top: 400px; left: 450px; }
+        #box10::before,#box20::before,#box30::before,#box40::before { content: "A"; }
+        #box11::before,#box21::before,#box31::before,#box41::before { content: "B"; }
+    </style>
+    <script type="application/javascript" src="./out/bundle-2boxes1rel-horiz.js"></script>
+</head>
+
+<body>
+    <div id="box10"></div>
+    <div id="box11"></div>
+
+    <div id="box20"></div>
+    <div id="box21"></div>
+
+    <div id="box30"></div>
+    <div id="box31"></div>
+
+    <div id="box40"></div>
+    <div id="box41"></div>
+</body>
+</html>

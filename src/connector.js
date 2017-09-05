@@ -31,25 +31,31 @@ export class Connector {
         if (!A) throw "A cannot be null or undefined";
         if (!B) throw "B cannot be null or undefined";
 
-        if (B.y >= A.y && B.x >= A.x) {
+        if (B.y >= A.y + A.height && B.x >= A.x + A.width) {
+            console.log("connector", "running B.y >= A.y && B.x >= A.x");
             let element = connect_a_top_left_b_bottom_right(A, B);
             return;
         }
 
-        if (B.y >= A.y && B.x < A.x) {
+        if (B.y >= A.y + A.height && B.x + B.width <= A.x) {
+            console.log("connector", "running B.y >= A.y && B.x < A.x");
             let element = connect_a_top_right_b_bottom_left(A, B);
             return;
         }
 
-        if (B.y < A.y && B.x <= A.x) {
+        if (B.y + B.height <= A.y && B.x + B.width <= A.x) {
+            console.log("connector", "running B.y < A.y && B.x <= A.x");
             let element = connect_a_bottom_right_b_top_left(A, B);
             return;
         }
 
-        if (B.y < A.y && B.x > A.x) {
+        if (B.y + B.height < A.y && B.x >= A.x + A.width) {
+            console.log("connector", "running B.y < A.y && B.x > A.x");
             let element = connect_a_bottom_left_b_top_right(A, B);
             return;
         }
+
+        console.log("connector", "unsupported configuration");
     }
 }
 
