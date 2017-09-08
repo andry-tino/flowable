@@ -3,9 +3,9 @@ import * as conn from "../../../src/connector.js";
 import * as boxes from "../../../src/box.js";
 
 window.addEventListener("load", function() {
-    //create2Boxes1Rel("box-a", "box-b");
+    create2Boxes1Rel("box-a", "box-b");
     create2Boxes1Rel("box-a", "box-c");
-    //create2Boxes1Rel("box-b", "box-d");
+    create2Boxes1Rel("box-b", "box-d");
 });
 
 function create2Boxes1Rel(id0, id1) {
