@@ -168,25 +168,9 @@ function connect_a_left_b_right(A, B) {
     let x = q.xa2;
     let y = q.ya1 + Math.floor(A.height / 2) - (A.y <= B.y ? 0 : q.h2);
 
-    let svg = snap(q.w2, q.h2);
-    let svgId = `conn${generateId()}`;
-    svg.attr({ id: svgId });
-
-    let svgElement = document.getElementById(svgId);
-    svgElement.style.position = "absolute";
-    svgElement.style.top = `${y}px`;
-    svgElement.style.left = `${x}px`;
-
-    let line = A.y <= B.y 
-        ? svg.line(0, 0, q.w2, q.h2) 
-        : svg.line(0, q.h2, q.w2, 0);
-    
-    line.attr({
-        "stroke": "#000",
-        "stroke-width": "2"
-    });
-
-    return svgElement;
+    return A.y <= B.y 
+        ? generateLine(q.w2, q.h2, y, x, 0, 0, q.w2, q.h2) 
+        : generateLine(q.w2, q.h2, y, x, 0, q.h2, q.w2, 0);
 }
 
 /**
@@ -202,24 +186,9 @@ function connect_a_right_b_left(A, B) {
     let x = q.xb2;
     let y = q.yb1 + Math.floor(B.height / 2) - (A.y >= B.y ? 0 : q.h3);
 
-    let svg = snap(q.w3, q.h3);
-    let svgId = `conn${generateId()}`;
-    svg.attr({ id: svgId });
-
-    let svgElement = document.getElementById(svgId);
-    svgElement.style.position = "absolute";
-    svgElement.style.top = `${y}px`;
-    svgElement.style.left = `${x}px`;
-
-    let line = A.y >= B.y 
-        ? svg.line(0, 0, q.w3, q.h3) 
-        : svg.line(0, q.h3, q.w3, 0);
-    line.attr({
-        "stroke": "#000",
-        "stroke-width": "2"
-    });
-
-    return svgElement;
+    return A.y >= B.y 
+        ? generateLine(q.w3, q.h3, y, x, 0, 0, q.w3, q.h3) 
+        : generateLine(q.w3, q.h3, y, x, 0, q.h3, q.w3, 0);
 }
 
 function quantities(A, B) {
