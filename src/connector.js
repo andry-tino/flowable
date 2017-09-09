@@ -222,10 +222,14 @@ function generateLine(w, h, top, left, l1, l2, l3, l4) {
     svgElement.style.top = `${top}px`;
     svgElement.style.left = `${left}px`;
 
+    //let arrow = svg.polygon([0, 20, 8, 20, 4, 0, 0, 20]).attr({ fill: '#000000' });
+    //let marker = arrow.marker(0, 0, 20, 20, 0, 10);
+
     let line = svg.line(l1, l2, l3, l4);
     line.attr({
         "stroke": "#000",
-        "stroke-width": "2"
+        "stroke-width": "2"/*,
+        "marker-start": marker*/
     });
 
     return svgElement;
