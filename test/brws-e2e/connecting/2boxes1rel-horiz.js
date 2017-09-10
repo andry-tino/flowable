@@ -26,10 +26,10 @@ function createBox(id) {
 
     let rect = el.getBoundingClientRect();
 
-    box.x = rect.left;
-    box.y = rect.top;
-    box.width = rect.width;
-    box.height = rect.height;
+    box.x = Math.ceil(rect.left);
+    box.y = Math.ceil(rect.top);
+    box.width = Math.ceil(rect.width);
+    box.height = Math.ceil(rect.height);
 
     return box;
 }
