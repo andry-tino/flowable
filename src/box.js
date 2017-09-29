@@ -59,7 +59,7 @@ export class Box {
      */
     set width(value) { 
         if (!Number.isInteger(value)) throw `Invalid value ${value} for property width`;
-        if (!checkValue(value)) throw "Value must be a positive (or null) integer";
+        if (!checkSizeValue(value)) throw `Value must be a positive (or null) integer! Value ${value} is not valid`;
 
         this._width = value;
     }
@@ -79,7 +79,7 @@ export class Box {
      */
     set height(value) { 
         if (!Number.isInteger(value)) throw `Invalid value ${value} for property height`;
-        if (!checkValue(value)) throw "Value must be a positive (or null) integer";
+        if (!checkSizeValue(value)) throw `Value must be a positive (or null) integer! Value ${value} is not valid`;
 
         this._height = value;
     }
@@ -99,7 +99,7 @@ export class Box {
      */
     set x(value) { 
         if (!Number.isInteger(value)) throw `Invalid value ${value} for property x`;
-        if (!checkValue(value)) throw "Value must be a positive (or null) integer";
+        if (!checkCoordValue(value)) throw `Value must be a positive (or null) integer! Value ${value} is not valid`;
 
         this._x = value;
     }
@@ -119,22 +119,32 @@ export class Box {
      */
     set y(value) { 
         if (!Number.isInteger(value)) throw `Invalid value ${value} for property y`; 
-        if (!checkValue(value)) throw "Value must be a positive (or null) integer";
+        if (!checkCoordValue(value)) throw `Value must be a positive (or null) integer! Value ${value} is not valid`;
 
         this._y = value;
     }
 }
 
 /**
- * Returns a value indicating whether the value is correct (positive or null integer).
+ * Returns a value indicating whether the size value is correct (positive or null integer).
  * 
  * @param {any} value 
  * @returns 
  */
-function checkValue(value) {
+function checkSizeValue(value) {
     if (!Number.isInteger(value)) return false;
 
     return Number.isInteger(value) && value >= 0;
+}
+
+/**
+ * Returns a value indicating whether the coordinate value is correct (positive or null integer).
+ * 
+ * @param {any} value 
+ * @returns 
+ */
+function checkCoordValue(value) {
+    return Number.isInteger(value);
 }
 
 /**

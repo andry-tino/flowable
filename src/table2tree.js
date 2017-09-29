@@ -26,6 +26,7 @@ export class Table2Tree {
 
         this.parentChildDict = null; // parent.id -> child
         this.childParentDict = null; // child.id -> parent
+        this.childParentRelsDict = null; // child.id -> relation to parent
     }
 
     /**
@@ -35,8 +36,10 @@ export class Table2Tree {
      * @memberof Table2Tree
      */
     convert() {
-        if (!this.childParentDict) 
+        if (!this.childParentDict) {
             this.childParentDict = populateChildParentDict(this.table);
+            this.childParentRelsDict = populateChildParentRelsDict(this.table);
+        }
         if (!this.parentChildDict) 
             this.parentChildDict = populateParentChildDict(this.table);
 
@@ -55,6 +58,7 @@ export class Table2Tree {
 
         for (let i = 0; i < keys.length; i++) {
             let parent = this.childParentDict[keys[i]]; // Box
+            let parentRel = this.childParentRelsDict[keys[i]]; // Relation type (number)
             let child = this.table.getBox(keys[i]); // Box
 
             if (!parent) throw `Parent box should be found for key: ${keys[i]}`;
@@ -67,7 +71,7 @@ export class Table2Tree {
                 this.nodes[child.id] = new tree.Node(child);
 
             // Creating tree relation
-            this.nodes[parent.id].addChild(this.nodes[child.id], new tree.Arc());
+            this.nodes[parent.id].addChild(this.nodes[child.id], new tree.Arc(parentRel));
         }
 
         return locateRoot(keys[0], this.childParentDict, this.nodes);
@@ -85,6 +89,22 @@ function populateChildParentDict(table) {
 
     table.each(function(relation) {
         dict[relation.rhs.id] = relation.lhs;
+    });
+
+    return dict;
+}
+
+/**
+ * Populates the dictionary of relation types for building the tree.
+ * 
+ * @param {any} table 
+ * @returns 
+ */
+function populateChildParentRelsDict(table) {
+    let dict = {};
+
+    table.each(function(relation) {
+        dict[relation.rhs.id] = relation.type;
     });
 
     return dict;

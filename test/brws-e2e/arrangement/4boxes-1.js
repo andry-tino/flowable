@@ -11,9 +11,9 @@ window.addEventListener("load", function() {
     let box2 = createBox("box-c");
     let box3 = createBox("box-d");
 
-    table.add(new relations.Relation(box0, box1));
-    table.add(new relations.Relation(box0, box2));
-    table.add(new relations.Relation(box1, box3));
+    table.add(new relations.Relation(box0, box1, relations.Relation.D));
+    table.add(new relations.Relation(box0, box2, relations.Relation.R));
+    table.add(new relations.Relation(box1, box3, relations.Relation.R));
 
     // Performing arrangement
     let arranger = new components.Arranger(table);
