@@ -6,6 +6,7 @@
 import * as relationsTable from "./relationsTable.js";
 import * as treeTableConversions from "./table2tree.js";
 import * as tree from "./tree.js";
+import * as traversal from "./treeTraversal.js";
 
 /**
  * Describes the arranging algorithm.
@@ -77,7 +78,7 @@ export class Arranger {
             minY = 0;
 
         // Here we should have the tree
-        let traverser = new TreeTraverser(this.root);
+        let traverser = new traversal.TreeTraverser(this.root);
 
         // Initialize
         traverser.traverse(function(node, type) {
@@ -93,6 +94,10 @@ export class Arranger {
         let my = this.marginY;
         let mx = this.marginX;
 
+        let logger = function() {
+            return `maxX=${maxX} minX=${minX} maxY=${maxY} minY=${minY}`;
+        };
+
         // Arrange
         traverser.traverse(function(node, type) {
             let box = node.content;
@@ -105,6 +110,7 @@ export class Arranger {
                 minX -= (0 + mx);
                 minY -= (0 + my);
 
+                console.log("arranger", "root node:", box, "info:", logger());
                 return;
             }
 
@@ -115,6 +121,7 @@ export class Arranger {
                 // Update position variable
                 maxY += (box.height + my);
 
+                console.log("arranger", "DOWN node:", box, "info:", logger());
                 return;
             }
 
@@ -125,99 +132,33 @@ export class Arranger {
                 // Update position variable
                 minY -= (box.height + my);
 
+                console.log("arranger", "UP node:", box, "info:", logger());
                 return;
             }
 
             if (type === tree.Arc.L) { // Current node is LEFT with its parent
-                // Update node's position
-                box.x = maxX;
-
-                // Update position variable
-                maxX += (box.width + mx);
-
-                return;
-            }
-
-            if (type === tree.Arc.R) { // Current node is RIGHT with its parent
                 // Update node's position
                 box.x = minX;
 
                 // Update position variable
                 minX -= (box.width + mx);
 
+                console.log("arranger", "LEFT node:", box, "info:", logger());
+                return;
+            }
+
+            if (type === tree.Arc.R) { // Current node is RIGHT with its parent
+                // Update node's position
+                box.x = maxX;
+
+                // Update position variable
+                maxX += (box.width + mx);
+
+                console.log("arranger", "RIGHT node:", box, "info:", logger());
                 return;
             }
 
             throw `Unrecognized relation type: ${type}`;
         });
-    }
-}
-
-/**
- * Traverses a tree.
- * Strategy implemented: from first to last node (left to right) + depth-first
- * 
- * @class TreeTraverser
- */
-class TreeTraverser {
-    /**
-     * Creates an instance of TreeTraverser.
-     * @param {any} node 
-     * @memberof TreeTraverser
-     */
-    constructor(node) {
-        if (!node) throw "node cannot be null or undefined";
-
-        this.root = node;
-    }
-
-    /**
-     * Traverses the tree and, for every node, executes an action.
-     * 
-     * @param {any} action A function accepting 2 args: traversed node, type of relation with parent.
-     * @memberof TreeTraverser
-     * @return {Number} The number of nodes traversed.
-     */
-    traverse(action) {
-        if (!action) throw "action cannot be null or undefined";
-
-        let count = 0;
-        let actionWrapper = function(node, type) {
-            count++;
-            action(node, type);
-        };
-
-        // For no relation, we pass -1
-        traverseRec(this.root, -1, actionWrapper);
-
-        return count;
-    }
-}
-
-/**
- * Recursively performs traversal.
- * 
- * @param {any} node 
- * @param {any} type 
- * @param {any} action 
- */
-function traverseRec(node, type, action) {
-    if (!node) throw "node cannot be null or undefined";
-    if (!Number.isInteger(type)) throw "type not valid";
-
-    // Execute action
-    action(node, type);
-
-    // Recurse
-    for (let i = 1; i <= node.count; i++) {
-        let child = node.child(i).node;
-        if (!child) continue;
-
-        let arc = node.child(i).arc;
-        if (!arc) throw "Missing arc info";
-
-        let relationType = arc.type;
-
-        traverseRec(child, relationType, action);
     }
 }
