@@ -99,9 +99,18 @@ export class Arranger {
         };
 
         // Arrange
-        traverser.traverse(function(node, type) {
+        traverser.traverse(function(node, type, parentNode) {
             let box = node.content;
+            let parentBox = parentNode ? parentNode.content : null;
             if (!box) throw "Node content (box) not present";
+
+            // Make inherit the node its parent's coordinates for starters
+            // The parent has already been positioned
+            // The coordinates will be refined later.
+            if (parentBox) {
+                box.x = parentBox.x;
+                box.y = parentBox.y;
+            }
 
             if (type === -1) { // Current node is the root
                 // Update position variable
@@ -121,7 +130,7 @@ export class Arranger {
                 // Update position variable
                 maxY += (box.height + my);
 
-                console.log("arranger", "DOWN node:", box, "info:", logger());
+                console.log("arranger", "DOWN node:", box, "parent:", parentNode, "info:", logger());
                 return;
             }
 
@@ -132,7 +141,7 @@ export class Arranger {
                 // Update position variable
                 minY -= (box.height + my);
 
-                console.log("arranger", "UP node:", box, "info:", logger());
+                console.log("arranger", "UP node:", box, "parent:", parentNode, "info:", logger());
                 return;
             }
 
@@ -143,7 +152,7 @@ export class Arranger {
                 // Update position variable
                 minX -= (box.width + mx);
 
-                console.log("arranger", "LEFT node:", box, "info:", logger());
+                console.log("arranger", "LEFT node:", box, "parent:", parentNode, "info:", logger());
                 return;
             }
 
@@ -154,7 +163,7 @@ export class Arranger {
                 // Update position variable
                 maxX += (box.width + mx);
 
-                console.log("arranger", "RIGHT node:", box, "info:", logger());
+                console.log("arranger", "RIGHT node:", box, "parent:", parentNode, "info:", logger());
                 return;
             }
 

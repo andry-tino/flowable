@@ -28,7 +28,8 @@ export class TreeTraverser {
     /**
      * Traverses the tree and, for every node, executes an action.
      * 
-     * @param {any} action A function accepting 2 args: traversed node, type of relation with parent.
+     * @param {any} action A function accepting 2 args: traversed node, type of relation with parent. 
+     *                     One more parameter (optional) can be passed: the parent node.
      * @memberof TreeTraverser
      * @return {Number} The number of nodes traversed.
      */
@@ -60,6 +61,7 @@ export class DepthFirstLxRxTreeTraverser {
      * Traverses the tree and, for every node, executes an action.
      * 
      * @param {any} action A function accepting 2 args: traversed node, type of relation with parent.
+     *                     One more parameter (optional) can be passed: the parent node.
      * @memberof DepthFirstLxRxTreeTraverser
      * @return {Number} The number of nodes traversed.
      */
@@ -67,9 +69,9 @@ export class DepthFirstLxRxTreeTraverser {
         if (!action) throw "action cannot be null or undefined";
 
         let count = 0;
-        let actionWrapper = function(node, type) {
+        let actionWrapper = function(node, type, nodeParent) {
             count++;
-            action(node, type);
+            action(node, type, nodeParent);
         };
 
         // For no relation, we pass -1
@@ -102,6 +104,7 @@ export class BreadthFirstLxRxTreeTraverser {
      * Traverses the tree and, for every node, executes an action.
      * 
      * @param {any} action A function accepting 2 args: traversed node, type of relation with parent.
+     *                     One more parameter (optional) can be passed: the parent node.
      * @memberof BreadthFirstLxRxTreeTraverser
      * @return {Number} The number of nodes traversed.
      */
@@ -109,9 +112,9 @@ export class BreadthFirstLxRxTreeTraverser {
         if (!action) throw "action cannot be null or undefined";
 
         let count = 0;
-        let actionWrapper = function(node, type) {
+        let actionWrapper = function(node, type, nodeParent) {
             count++;
-            action(node, type);
+            action(node, type, nodeParent);
         };
 
         // For no relation, we pass -1
@@ -127,13 +130,14 @@ export class BreadthFirstLxRxTreeTraverser {
  * @param {any} node 
  * @param {any} type 
  * @param {any} action 
+ * @param {any} parentNode (optional) 
  */
-function traverseDepthFirstRec(node, type, action) {
+function traverseDepthFirstRec(node, type, action, parentNode) {
     if (!node) throw "node cannot be null or undefined";
     if (!Number.isInteger(type)) throw "type not valid";
 
     // Execute action
-    action(node, type);
+    action(node, type, parentNode);
 
     // Recurse
     for (let i = 1; i <= node.count; i++) {
@@ -145,7 +149,7 @@ function traverseDepthFirstRec(node, type, action) {
 
         let relationType = arc.type;
 
-        traverseDepthFirstRec(child, relationType, action);
+        traverseDepthFirstRec(child, relationType, action, node);
     }
 }
 
@@ -157,14 +161,15 @@ function traverseDepthFirstRec(node, type, action) {
  * @param {any} type 
  * @param {any} action 
  * @param {any} isFirstIteration 
+ * @param {any} parentNode (optional) 
  */
-function traverseBreadthFirstRec(node, type, action, iteration) {
+function traverseBreadthFirstRec(node, type, action, iteration, parentNode) {
     if (!node) throw "node cannot be null or undefined";
     if (!Number.isInteger(type)) throw "type not valid";
 
     // Execute action
     if (iteration === 0) 
-        action(node, type);
+        action(node, type, parentNode);
 
     // Apply action to all children
     for (let i = 1; i <= node.count; i++) {
@@ -176,7 +181,7 @@ function traverseBreadthFirstRec(node, type, action, iteration) {
 
         let relationType = arc.type;
 
-        action(node, relationType);
+        action(node, relationType, parentNode);
     }
 
     // Recurse
@@ -189,6 +194,6 @@ function traverseBreadthFirstRec(node, type, action, iteration) {
 
         let relationType = arc.type;
 
-        traverseBreadthFirstRec(child, relationType, action, false);
+        traverseBreadthFirstRec(child, relationType, action, false, node);
     }
 }
