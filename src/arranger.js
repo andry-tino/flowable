@@ -7,6 +7,7 @@ import * as relationsTable from "./relationsTable.js";
 import * as treeTableConversions from "./table2tree.js";
 import * as tree from "./tree.js";
 import * as traversal from "./treeTraversal.js";
+import * as utils from "./utils.js";
 
 /**
  * Describes the arranging algorithm.
