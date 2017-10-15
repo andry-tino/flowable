@@ -34,7 +34,7 @@ task('default', function() {
 });
 
 desc('Builds all tests.');
-task('tests', function() {
+task('build-tests', function() {
     var callback = function() { 
         console.log("Bundle successfully created!"); 
     };

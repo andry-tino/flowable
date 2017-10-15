@@ -3,6 +3,8 @@
  * Andrea Tino - 2017
  */
 
+import * as utils from "./utils.js";
+
 /**
  * Describes a generic content bock, thus a box.
  * 
@@ -123,6 +125,28 @@ export class Box {
 
         this._y = value;
     }
+}
+
+/**
+ * Tests hot between two boxes.
+ * 
+ * @export
+ * @param {any} box1 
+ * @param {any} box2 
+ */
+export function hitTest(box1, box2) {
+    if (!box1) throw "box1 cannot be null or undefined";
+    if (!box2) throw "box2 cannot be null or undefined";
+
+    return utils.hitTest(
+        box1.x, 
+        box1.x + box1.width, 
+        box1.y, 
+        box1.y + box1.height, 
+        box2.x, 
+        box2.x + box2.width, 
+        box2.y, 
+        box2.y + box2.height);
 }
 
 /**
