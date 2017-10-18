@@ -73,8 +73,144 @@ export class Arranger {
         }
 
         // Using dummy grid as default algorithm
-        arrangeInDummyGrid(this.root, { marginx: 10, marginy: 10 });
+        //arrangeInDummyGrid(this.root, { marginx: 10, marginy: 10 });
+        // Using dictionary grid as default algorithm
+        arrangeInDictionaryGrid(this.root, { marginx: 10, marginy: 10 });
     }
+}
+
+/**
+ * Algorithm for arranging boxes in a sophisticated grid by using a 
+ * point-to-box dictionary to keep track of used space.
+ * 
+ * @param {any} node 
+ * @param {any} config Expects the following:
+ *                     { marginx, marginy }
+ */
+function arrangeInDictionaryGrid(node, config) {
+    if (!node) {
+        throw "Node cannot be null or undefined! Cannot arrange.";
+    }
+
+    if (!config) {
+        // Default config
+        config = {
+            marginx: 10,
+            marginy: 10
+        };
+    }
+
+    // Here we should have the tree
+    let traverser = new traversal.TreeTraverser(node);
+
+    // Initialize
+    traverser.traverse(function(node, type) {
+        let box = node.content;
+        if (!box) throw "Node content (box) not present";
+
+        box.x = 0;
+        box.y = 0;
+
+        // TODO: Add checks for dimensions
+    });
+
+    let my = config.marginy;
+    let mx = config.marginx;
+
+    /*
+     * The dictionary will contain single column associations to boxes
+     */
+    let dict = {
+        x: {},
+        y: {}
+    };
+
+    let addBoxToDict = function(box) {
+        if (!box) throw "box cannot be null or undefined";
+
+        var x1 = box.x,
+            x2 = box.x + box.width,
+            y1 = box.y,
+            y2 = box.y + box.height;
+
+        for (let i = x1; i <= x2; i++) {
+            dict.x[`${i}`] = dict.x[`${i}`] || [];
+            dict.x[`${i}`].push(box);
+        }
+        for (let j = y1; j <= y2; j++) {
+            dict.y[`${j}`] = dict.y[`${j}`] || [];
+            dict.y[`${j}`].push(box);
+        }
+    };
+
+    // Returns all the boxes on the row and column line and makes intersection
+    let getDictEntry = function(x, y) {
+        var boxes_x = dict.x[`${x}`] || [];
+        var boxes_y = dict.y[`${y}`] || [];
+        var res = [];
+
+        for (let i = 0; i < boxes_x.length; i++) {
+            for (let j = 0; j < boxes_x.length; j++) {
+                if (boxes_x[i].id === boxes_x[j].id) {
+                    res.push(boxes_x[i]);
+                }
+            }
+        }
+
+        // Checking that we have only one entry
+        if (res.length > 1) {
+            throw "Colliding boxes detected";
+        }
+
+        return res.length == 0 ? null : res[0];
+    };
+
+    let hitTest = function(box) {
+        return !!dict[getDictEntry(box.x, box.y)];
+    };
+
+    // Arrange
+    traverser.traverse(function(node, type, parentNode) {
+        let box = node.content;
+        let parentBox = parentNode ? parentNode.content : null;
+        if (!box) throw "Node content (box) not present";
+
+        // Make inherit the node its parent's coordinates for starters
+        // The parent has already been positioned
+        // The coordinates will be refined later.
+        if (parentBox) {
+            box.x = parentBox.x;
+            box.y = parentBox.y;
+        }
+
+        if (type === -1) { // Current node is the root
+            // The box stays at (0, 0)
+        } else if (type === tree.Arc.D) { // Current node is DOWN with its parent
+            // Try to place the block down and check whether the block hits something
+            for (box.y += parentBox.height + my; hitTest(box); /* Nothing */) {
+                let hitBox = getDictEntry(box.x, box.y);
+
+                // Take the box further down
+                box.y += hitBox.height + my;
+            }
+        } else if (type === tree.Arc.U) { // Current node is UP with its parent
+            // TODO
+        } else if (type === tree.Arc.L) { // Current node is LEFT with its parent
+            // Try to place the block to the left and check whether the block hits something
+            for (box.x += parentBox.width + mx; hitTest(box); /* Nothing */) {
+                let hitBox = getDictEntry(box.x, box.y);
+
+                // Take the box further down
+                box.x += hitBox.width + mx;
+            }
+        } else if (type === tree.Arc.R) { // Current node is RIGHT with its parent
+            // TODO
+        } else {
+            throw `Unrecognized relation type: ${type}`;
+        }
+
+        addBoxToDict(box);
+    });
 }
 
 /**
