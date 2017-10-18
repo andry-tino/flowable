@@ -196,6 +196,8 @@ function arrangeInDictionaryGrid(node, config) {
         } else if (type === tree.Arc.U) { // Current node is UP with its parent
             // TODO
         } else if (type === tree.Arc.L) { // Current node is LEFT with its parent
+            // TODO
+        } else if (type === tree.Arc.R) { // Current node is RIGHT with its parent
             // Try to place the block to the left and check whether the block hits something
             for (box.x += parentBox.width + mx; hitTest(box); /* Nothing */) {
                 let hitBox = getDictEntry(box.x, box.y);
@@ -203,8 +205,6 @@ function arrangeInDictionaryGrid(node, config) {
                 // Take the box further down
                 box.x += hitBox.width + mx;
             }
-        } else if (type === tree.Arc.R) { // Current node is RIGHT with its parent
-            // TODO
         } else {
             throw `Unrecognized relation type: ${type}`;
         }
