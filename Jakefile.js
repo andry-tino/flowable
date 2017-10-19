@@ -13,6 +13,7 @@ var wpconfigs = {
             arrangement: {
                 test2boxes: require(path.join(__dirname, "test", "brws-e2e", "arrangement", "2boxes.webpack.config.js")),
                 test4boxes_1: require(path.join(__dirname, "test", "brws-e2e", "arrangement", "4boxes-1.webpack.config.js")),
+                test4boxes_2: require(path.join(__dirname, "test", "brws-e2e", "arrangement", "4boxes-2.webpack.config.js")),
                 test4boxes_vert: require(path.join(__dirname, "test", "brws-e2e", "arrangement", "4boxes-vert.webpack.config.js"))
             },
             connecting: {
@@ -43,6 +44,7 @@ task('build-tests', function() {
 
     webpack(wpconfigs.tests.e2e.arrangement.test2boxes, callback);
     webpack(wpconfigs.tests.e2e.arrangement.test4boxes_1, callback);
+    webpack(wpconfigs.tests.e2e.arrangement.test4boxes_2, callback);
     webpack(wpconfigs.tests.e2e.arrangement.test4boxes_vert, callback);
 
     webpack(wpconfigs.tests.e2e.connecting.test2boxes1rel_2, callback);
