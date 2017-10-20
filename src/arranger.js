@@ -119,6 +119,7 @@ function arrangeInDictionaryGrid(node, config) {
 
     /*
      * The dictionary will contain single column associations to boxes
+     * x, y: int -> [box]
      */
     let dict = {
         x: {},
@@ -141,6 +142,78 @@ function arrangeInDictionaryGrid(node, config) {
             dict.y[`${j}`] = dict.y[`${j}`] || [];
             dict.y[`${j}`].push(box);
         }
+    };
+
+    let buildReverseGrid = function(dict, minx, miny, maxx, maxy) {
+        // Validates that the space of integers is contiguous and extract min and max
+        // Returns { min: int, max: int }
+        var extractExtremes = function(values) {
+            if (values.length == 1) {
+                return { min: values[0], max: values[0] };
+            }
+
+            var sortedValues = values.sort(function(a,b) { return a - b; });
+
+            for (let k = 1; k < sortedValues.length; k++) {
+                if (sortedValues[k] - sortedValues[k - 1] != 1) {
+                    console.log("Inconsistent interval detected in array:", values);
+                    throw "Inconsistent interval";
+                }
+            }
+
+            return { min: sortedValues[0], max: sortedValues[sortedValues.length - 1] };
+        };
+
+        // x, y: boxid -> [xvals:int]
+        var revdict = {
+            x: {},
+            y: {}
+        };
+
+        for (let i = minx; i <= maxx; i++) {
+            var entries = dict.x[`${i}`];
+            if (!entries || entries.length == 0) continue;
+
+            for (let k = 0; k < entries.length; k++) {
+                let box = entries[k];
+
+                revdict.x[box.id] = revdict.x[box.id] || [];
+                revdict.x[box.id].push(i);
+            }
+        }
+        for (let j = miny; j <= maxy; j++) {
+            var entries = dict.x[`${j}`];
+            if (!entries || entries.length == 0) continue;
+
+            for (let k = 0; k < entries.length; k++) {
+                let box = entries[k];
+
+                revdict.y[box.id] = revdict.y[box.id] || [];
+                revdict.y[box.id].push(j);
+            }
+        }
+
+        // Process each array to get extremes
+        for (let k = 0; k < Object.keys(revdict.x).length; k++) {
+            let boxid = Object.keys(revdict.x)[k];
+            let values = revdict.x[boxid];
+
+            // Reassign
+            revdict.x[boxid] = extractExtremes(values);
+        }
+        for (let k = 0; k < Object.keys(revdict.y).length; k++) {
+            let boxid = Object.keys(revdict.y)[k];
+            let values = revdict.y[boxid];
+
+            // Reassign
+            revdict.y[boxid] = extractExtremes(values);
+        }
+
+        return revdict;
+    };
+
+    let renderDictGrid = function() {
+        let body = window.document.body;
     };
 
     // Returns all the boxes on the row and column line and makes intersection
@@ -211,6 +284,8 @@ function arrangeInDictionaryGrid(node, config) {
 
         addBoxToDict(box);
     });
+
+    console.log("Arrangement is over");
 }
 
 /**
