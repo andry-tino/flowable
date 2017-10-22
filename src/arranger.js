@@ -122,6 +122,10 @@ function arrangeInDictionaryGrid(node, config) {
      * x, y: int -> [box]
      */
     let dict = {
+        minx: 0,
+        miny: 0,
+        maxx: 0,
+        maxy: 0,
         x: {},
         y: {}
     };
@@ -142,6 +146,12 @@ function arrangeInDictionaryGrid(node, config) {
             dict.y[`${j}`] = dict.y[`${j}`] || [];
             dict.y[`${j}`].push(box);
         }
+
+        // Update min and max
+        dict.minx = x1 < dict.minx ? x1 : dict.minx;
+        dict.miny = y1 < dict.miny ? y1 : dict.miny;
+        dict.maxx = x2 > dict.maxx ? x2 : dict.maxx;
+        dict.maxy = y2 > dict.maxy ? y2 : dict.maxy;
     };
 
     let buildReverseGrid = function(dict, minx, miny, maxx, maxy) {
@@ -212,8 +222,33 @@ function arrangeInDictionaryGrid(node, config) {
         return revdict;
     };
 
-    let renderDictGrid = function() {
-        let body = window.document.body;
+    let renderDictGrid = function(dict, element) {
+        var el = element || window.document.body;
+        var revdict = buildReverseGrid(dict, dict.minx, dict.miny, dict.maxx, dict.maxy);
+
+        console.log("Reverse dict is:", revdict);
+        console.log("Consistency test:", Object.keys(revdict.x).length === Object.keys(revdict.x).length ? "PASS" : "FAIL");
+
+        for (let k = 0; k < Object.keys(revdict.x).length; k++) {
+            let boxid = Object.keys(revdict.x)[k];
+            let extremesx = revdict.x[boxid];
+            let extremesy = revdict.y[boxid];
+
+            if (!extremesx || !extremesy) {
+                throw "One element in X does not found in Y or vice versa";
+            }
+
+            let div = document.createElement("div");
+            div.style.width = `${extremesx.max - extremesx.min}px`;
+            div.style.height = `${extremesy.max - extremesy.min}px`;
+            div.style.position = "absolute";
+            div.style.opacity = ".25";
+            div.style.backgroundColor = "#ff9900";
+            div.style.left = `${extremesx.min}px`;
+            div.style.top = `${extremesy.min}px`;
+
+            el.appendChild(div);
+        }
     };
 
     // Returns all the boxes on the row and column line and makes intersection
