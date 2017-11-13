@@ -43,7 +43,7 @@ window.addEventListener("load", function() {
 });
 
 function createBox(id) {
-    let box = new boxes.Box();
+    let box = new boxes.Box(`fromel-${id}`);
     let el = document.getElementById(id);
 
     if (!el) throw `Could not find element ${id}`;

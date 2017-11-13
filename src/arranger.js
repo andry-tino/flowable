@@ -119,7 +119,7 @@ function arrangeInDictionaryGrid(node, config) {
 
     /*
      * The dictionary will contain single column associations to boxes
-     * x, y: int -> [box]
+     * x, y: string(int) -> [box]
      */
     let dict = {
         minx: 0,
@@ -181,7 +181,7 @@ function arrangeInDictionaryGrid(node, config) {
         };
 
         for (let i = minx; i <= maxx; i++) {
-            var entries = dict.x[`${i}`];
+            let entries = dict.x[`${i}`];
             if (!entries || entries.length == 0) continue;
 
             for (let k = 0; k < entries.length; k++) {
@@ -192,7 +192,7 @@ function arrangeInDictionaryGrid(node, config) {
             }
         }
         for (let j = miny; j <= maxy; j++) {
-            var entries = dict.x[`${j}`];
+            let entries = dict.y[`${j}`];
             if (!entries || entries.length == 0) continue;
 
             for (let k = 0; k < entries.length; k++) {
@@ -202,6 +202,8 @@ function arrangeInDictionaryGrid(node, config) {
                 revdict.y[box.id].push(j);
             }
         }
+
+        console.log("revdict before reassign", revdict);
 
         // Process each array to get extremes
         for (let k = 0; k < Object.keys(revdict.x).length; k++) {
@@ -226,6 +228,7 @@ function arrangeInDictionaryGrid(node, config) {
         var el = element || window.document.body;
         var revdict = buildReverseGrid(dict, dict.minx, dict.miny, dict.maxx, dict.maxy);
 
+        console.log("Dict is:", dict);
         console.log("Reverse dict is:", revdict);
         console.log("Consistency test:", Object.keys(revdict.x).length === Object.keys(revdict.x).length ? "PASS" : "FAIL");
 
@@ -300,6 +303,8 @@ function arrangeInDictionaryGrid(node, config) {
 
                 // Take the box further down
                 box.y += hitBox.height + my;
+
+                console.log("Positioning DOWN", "Box", box.id, "Failed hit test hitting:", hitBox.id);
             }
         } else if (type === tree.Arc.U) { // Current node is UP with its parent
             // TODO
@@ -312,6 +317,8 @@ function arrangeInDictionaryGrid(node, config) {
 
                 // Take the box further down
                 box.x += hitBox.width + mx;
+
+                console.log("Positioning RIGHT", "Box", box.id, "Failed hit test hitting:", hitBox.id);
             }
         } else {
             throw `Unrecognized relation type: ${type}`;
@@ -320,7 +327,8 @@ function arrangeInDictionaryGrid(node, config) {
         addBoxToDict(box);
     });
 
-    console.log("Arrangement is over");
+    // Debug
+    renderDictGrid(dict);
 }
 
 /**

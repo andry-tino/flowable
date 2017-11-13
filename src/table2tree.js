@@ -40,8 +40,9 @@ export class Table2Tree {
             this.childParentDict = populateChildParentDict(this.table);
             this.childParentRelsDict = populateChildParentRelsDict(this.table);
         }
-        if (!this.parentChildDict) 
+        if (!this.parentChildDict) {
             this.parentChildDict = populateParentChildDict(this.table);
+        }
 
         let keys = Object.keys(this.childParentDict);
 
