@@ -203,7 +203,7 @@ function arrangeInDictionaryGrid(node, config) {
             }
         }
 
-        console.log("revdict before reassign", revdict);
+        //console.log("revdict before reassign", revdict);
 
         // Process each array to get extremes
         for (let k = 0; k < Object.keys(revdict.x).length; k++) {
@@ -261,8 +261,8 @@ function arrangeInDictionaryGrid(node, config) {
         var res = [];
 
         for (let i = 0; i < boxes_x.length; i++) {
-            for (let j = 0; j < boxes_x.length; j++) {
-                if (boxes_x[i].id === boxes_x[j].id) {
+            for (let j = 0; j < boxes_y.length; j++) {
+                if (boxes_x[i].id === boxes_y[j].id) {
                     res.push(boxes_x[i]);
                 }
             }
@@ -276,8 +276,46 @@ function arrangeInDictionaryGrid(node, config) {
         return res.length == 0 ? null : res[0];
     };
 
+    // Returns an object with hit details, otherwise null in case of no hit
+    // Check the perimeter
     let hitTest = function(box) {
-        return !!dict[getDictEntry(box.x, box.y)];
+        // Top and bottom side
+        for (let i = box.x; i <= box.x + box.width; i++) {
+            if (!!getDictEntry(i, box.y)) {
+                return { 
+                    box: box, 
+                    hitBox: getDictEntry(i, box.y), 
+                    x: i, y: box.y, 
+                    desc: "top side scan of box" };
+            }
+            if (!!getDictEntry(i, box.y + box.height)) {
+                return { 
+                    box: box, 
+                    hitBox: getDictEntry(i, box.y + box.height), 
+                    x: i, y: box.y + box.height, 
+                    desc: "bottom side scan of box" };
+            }
+        }
+
+        // Left and right side
+        for (let j = box.y; j <= box.y + box.height; j++) {
+            if (!!getDictEntry(box.x, j)) {
+                return { 
+                    box: box, 
+                    hitBox: getDictEntry(box.x, j), 
+                    x: box.x, y: j, 
+                    desc: "left side scan of box" };
+            }
+            if (!!getDictEntry(box.x + box.width, j)) {
+                return { 
+                    box: box, 
+                    hitBox: getDictEntry(box.x + box.width, j), 
+                    x: box.x + box.width, y: j, 
+                    desc: "right side scan of box" };
+            }
+        }
+
+        return null;
     };
 
     // Arrange
@@ -294,17 +332,20 @@ function arrangeInDictionaryGrid(node, config) {
             box.y = parentBox.y;
         }
 
+        const maxAttemptsNumber = 10;
         if (type === -1) { // Current node is the root
             // The box stays at (0, 0)
         } else if (type === tree.Arc.D) { // Current node is DOWN with its parent
             // Try to place the block down and check whether the block hits something
-            for (box.y += parentBox.height + my; hitTest(box); /* Nothing */) {
-                let hitBox = getDictEntry(box.x, box.y);
+            let attemptsCounter = 0;
+            for (box.y += parentBox.height + my; hitTest(box) && attemptsCounter < maxAttemptsNumber; attemptsCounter++) {
+                let hitInfo = hitTest(box);
+                let hitBox = hitInfo.hitBox;
 
                 // Take the box further down
                 box.y += hitBox.height + my;
 
-                console.log("Positioning DOWN", "Box", box.id, "Failed hit test hitting:", hitBox.id);
+                console.log("Pos DOWN", `box ${box.id}`, box, `failed hit test on box ${hitBox.id}:`, hitInfo, "attempt", attemptsCounter);
             }
         } else if (type === tree.Arc.U) { // Current node is UP with its parent
             // TODO
@@ -312,13 +353,15 @@ function arrangeInDictionaryGrid(node, config) {
             // TODO
         } else if (type === tree.Arc.R) { // Current node is RIGHT with its parent
             // Try to place the block to the left and check whether the block hits something
-            for (box.x += parentBox.width + mx; hitTest(box); /* Nothing */) {
-                let hitBox = getDictEntry(box.x, box.y);
+            let attemptsCounter = 0;
+            for (box.x += parentBox.width + mx; hitTest(box) && attemptsCounter < maxAttemptsNumber; attemptsCounter++) {
+                let hitInfo = hitTest(box);
+                let hitBox = hitInfo.hitBox;
 
                 // Take the box further down
                 box.x += hitBox.width + mx;
 
-                console.log("Positioning RIGHT", "Box", box.id, "Failed hit test hitting:", hitBox.id);
+                console.log("Pos RIGHT", `box ${box.id}`, box, `failed hit test on box ${hitBox.id}:`, hitInfo, "attempt", attemptsCounter);
             }
         } else {
             throw `Unrecognized relation type: ${type}`;
