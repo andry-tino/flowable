@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -80,7 +80,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Andrea Tino - 2017
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _relation = __webpack_require__(5);
+var _relation = __webpack_require__(6);
 
 var relation = _interopRequireWildcard(_relation);
 
@@ -485,10 +485,78 @@ var RelationsTable = exports.RelationsTable = function () {
 "use strict";
 
 
-__webpack_require__(3);
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.hitTest = hitTest;
+exports.assert = assert;
+/**
+ * utils.js
+ * Andrea Tino - 2017
+ */
+
+/**
+ * Gets a value indicating whether two rectangles overlaps each other or not.
+ * 
+ * @export
+ * @param {any} xa1 
+ * @param {any} xa2 
+ * @param {any} ya1 
+ * @param {any} ya2 
+ * @param {any} xb1 
+ * @param {any} xb2 
+ * @param {any} yb1 
+ * @param {any} yb2 
+ */
+function hitTest(xa1, xa2, ya1, ya2, xb1, xb2, yb1, yb2) {
+    assert(xa1 <= xa2);
+    assert(ya1 <= ya2);
+    assert(xb1 <= xb2);
+    assert(yb1 <= yb2);
+
+    var r1 = { x1: xa1, x2: xa2, y1: ya1, y2: ya2 };
+    var r2 = { x1: xb1, x2: xb2, y1: yb1, y2: yb2 };
+
+    // The rectangles don't overlap if
+    // one rectangle's minimum in some dimension 
+    // is greater than the other's maximum in
+    // that dimension.
+    var noOverlap = r1.x1 > r2.x2 || r2.x1 > r1.x2 || r1.y1 > r2.y2 || r2.y1 > r1.y2;
+
+    return !noOverlap;
+}
+
+/**
+ * Asserts.
+ * 
+ * @export
+ * @param {any} prop 
+ */
+function assert(prop) {
+    if (prop === true) {
+        return;
+    }
+
+    if (prop === false) {
+        throw "Assert failure on: " + prop;
+    }
+
+    throw "Assert (type) failure on: " + prop;
+}
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(4);
+
+__webpack_require__(8);
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -508,7 +576,7 @@ var _relationsTable = __webpack_require__(1);
 
 var relationsTable = _interopRequireWildcard(_relationsTable);
 
-var _table2tree = __webpack_require__(4);
+var _table2tree = __webpack_require__(5);
 
 var treeTableConversions = _interopRequireWildcard(_table2tree);
 
@@ -516,11 +584,11 @@ var _tree = __webpack_require__(0);
 
 var tree = _interopRequireWildcard(_tree);
 
-var _treeTraversal = __webpack_require__(6);
+var _treeTraversal = __webpack_require__(7);
 
 var traversal = _interopRequireWildcard(_treeTraversal);
 
-var _utils = __webpack_require__(7);
+var _utils = __webpack_require__(2);
 
 var utils = _interopRequireWildcard(_utils);
 
@@ -1050,7 +1118,7 @@ function arrangeInDummyGrid(node, config) {
 }
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1209,7 +1277,7 @@ function populateParentChildDict(table) {
 }
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1355,7 +1423,7 @@ var Relation = exports.Relation = function () {
 }();
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1605,7 +1673,7 @@ function traverseBreadthFirstRec(node, type, action, iteration, parentNode) {
 }
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1614,60 +1682,231 @@ function traverseBreadthFirstRec(node, type, action, iteration, parentNode) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Box = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * box.js
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Andrea Tino - 2017
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
 exports.hitTest = hitTest;
-exports.assert = assert;
-/**
- * utils.js
- * Andrea Tino - 2017
- */
+
+var _utils = __webpack_require__(2);
+
+var utils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Gets a value indicating whether two rectangles overlaps each other or not.
+ * Describes a generic content bock, thus a box.
  * 
  * @export
- * @param {any} xa1 
- * @param {any} xa2 
- * @param {any} ya1 
- * @param {any} ya2 
- * @param {any} xb1 
- * @param {any} xb2 
- * @param {any} yb1 
- * @param {any} yb2 
+ * @class Box
  */
-function hitTest(xa1, xa2, ya1, ya2, xb1, xb2, yb1, yb2) {
-    assert(xa1 <= xa2);
-    assert(ya1 <= ya2);
-    assert(xb1 <= xb2);
-    assert(yb1 <= yb2);
+var Box = exports.Box = function () {
+    /**
+     * Creates an instance of Box.
+     * @memberof Box
+     */
+    function Box(id) {
+        _classCallCheck(this, Box);
 
-    var r1 = { x1: xa1, x2: xa2, y1: ya1, y2: ya2 };
-    var r2 = { x1: xb1, x2: xb2, y1: yb1, y2: yb2 };
+        if (!id) {
+            id = generateId();
+        }
 
-    // The rectangles don't overlap if
-    // one rectangle's minimum in some dimension 
-    // is greater than the other's maximum in
-    // that dimension.
-    var noOverlap = r1.x1 > r2.x2 || r2.x1 > r1.x2 || r1.y1 > r2.y2 || r2.y1 > r1.y2;
+        this._id = id;
+        this._width = 0;
+        this._height = 0;
+        this._x = 0;
+        this._y = 0;
+    }
 
-    return !noOverlap;
+    /**
+     * Gets the id.
+     * 
+     * @readonly
+     * @memberof Box
+     */
+
+
+    _createClass(Box, [{
+        key: "id",
+        get: function get() {
+            return this._id;
+        }
+
+        /**
+         * Sets the id.
+         * 
+         * @memberof Box
+         */
+        ,
+        set: function set(value) {
+            if (!value) throw "value cannot be null or undefined";
+            this._id = value;
+        }
+
+        /**
+         * Gets the width.
+         * 
+         * @readonly
+         * @memberof Box
+         */
+
+    }, {
+        key: "width",
+        get: function get() {
+            return this._width;
+        }
+
+        /**
+         * Sets the width.
+         * 
+         * @memberof Box
+         */
+        ,
+        set: function set(value) {
+            if (!Number.isInteger(value)) throw "Invalid value " + value + " for property width";
+            if (!checkSizeValue(value)) throw "Value must be a positive (or null) integer! Value " + value + " is not valid";
+
+            this._width = value;
+        }
+
+        /**
+         * Gets the height.
+         * 
+         * @readonly
+         * @memberof Box
+         */
+
+    }, {
+        key: "height",
+        get: function get() {
+            return this._height;
+        }
+
+        /**
+         * Sets the height.
+         * 
+         * @memberof Box
+         */
+        ,
+        set: function set(value) {
+            if (!Number.isInteger(value)) throw "Invalid value " + value + " for property height";
+            if (!checkSizeValue(value)) throw "Value must be a positive (or null) integer! Value " + value + " is not valid";
+
+            this._height = value;
+        }
+
+        /**
+         * Gets the x coordinate (from upper left corner).
+         * 
+         * @readonly
+         * @memberof Box
+         */
+
+    }, {
+        key: "x",
+        get: function get() {
+            return this._x;
+        }
+
+        /**
+         * Sets the x coordinate (from upper left corner).
+         * 
+         * @memberof Box
+         */
+        ,
+        set: function set(value) {
+            if (!Number.isInteger(value)) throw "Invalid value " + value + " for property x";
+            if (!checkCoordValue(value)) throw "Value must be a positive (or null) integer! Value " + value + " is not valid";
+
+            this._x = value;
+        }
+
+        /**
+         * Gets the y coordionate (from upper left corner).
+         * 
+         * @readonly
+         * @memberof Box
+         */
+
+    }, {
+        key: "y",
+        get: function get() {
+            return this._y;
+        }
+
+        /**
+         * Sets the y coordinate (from upper left corner).
+         * 
+         * @memberof Box
+         */
+        ,
+        set: function set(value) {
+            if (!Number.isInteger(value)) throw "Invalid value " + value + " for property y";
+            if (!checkCoordValue(value)) throw "Value must be a positive (or null) integer! Value " + value + " is not valid";
+
+            this._y = value;
+        }
+    }]);
+
+    return Box;
+}();
+
+/**
+ * Tests hot between two boxes.
+ * 
+ * @export
+ * @param {any} box1 
+ * @param {any} box2 
+ */
+
+
+function hitTest(box1, box2) {
+    if (!box1) throw "box1 cannot be null or undefined";
+    if (!box2) throw "box2 cannot be null or undefined";
+
+    return utils.hitTest(box1.x, box1.x + box1.width, box1.y, box1.y + box1.height, box2.x, box2.x + box2.width, box2.y, box2.y + box2.height);
 }
 
 /**
- * Asserts.
+ * Returns a value indicating whether the size value is correct (positive or null integer).
  * 
- * @export
- * @param {any} prop 
+ * @param {any} value 
+ * @returns 
  */
-function assert(prop) {
-    if (prop === true) {
-        return;
-    }
+function checkSizeValue(value) {
+    if (!Number.isInteger(value)) return false;
 
-    if (prop === false) {
-        throw "Assert failure on: " + prop;
-    }
+    return Number.isInteger(value) && value >= 0;
+}
 
-    throw "Assert (type) failure on: " + prop;
+/**
+ * Returns a value indicating whether the coordinate value is correct (positive or null integer).
+ * 
+ * @param {any} value 
+ * @returns 
+ */
+function checkCoordValue(value) {
+    return Number.isInteger(value);
+}
+
+/**
+ * Generates a rnadom hex id.
+ * 
+ * @returns 
+ */
+function generateId() {
+    var letters = '0123456789abcdef'.split('');
+    var r = 'box-';
+    for (var i = 0; i < 6; i++) {
+        r += letters[Math.floor(Math.random() * 10)];
+    }
+    return r;
 }
 
 /***/ })

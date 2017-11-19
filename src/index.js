@@ -3,3 +3,4 @@
  */
 
 import "./arranger.js";
+import "./box.js"
