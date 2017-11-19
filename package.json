@@ -1,6 +1,6 @@
 {
-  "name": "flowable",
-  "version": "1.0.0",
+  "name": "@andry-tino/flowable",
+  "version": "0.1.0",
   "description": "A library to generate flowing HTML-based content",
   "main": "index.js",
   "directories": {
