@@ -371,7 +371,7 @@ function arrangeInDictionaryGrid(node, config) {
     });
 
     // Debug
-    renderDictGrid(dict);
+    //renderDictGrid(dict);
 }
 
 /**
