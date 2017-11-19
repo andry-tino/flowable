@@ -4,6 +4,8 @@ module.exports = {
     entry: './src/lib.js',
     output: {
         filename: 'flowable.js',
+        library: "flowable",
+        libraryTarget: "umd",
         path: path.resolve(__dirname, 'dist')
     },
     module: {
