@@ -70,11 +70,123 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * relationsTable.js
+ * Andrea Tino - 2017
+ */
+
+/**
+ * Describes a table containing relations.
+ * This class performs checks on the collection in order to avoid duplicates.
+ * 
+ * @export
+ * @class RelationsTable
+ */
+var RelationsTable = exports.RelationsTable = function () {
+    /**
+     * Creates an instance of RelationsTable.
+     * @memberof RelationsTable
+     */
+    function RelationsTable() {
+        _classCallCheck(this, RelationsTable);
+
+        this.relations = [];
+        this.boxes = {}; // We keep a dictionary of boxes: id -> box
+    }
+
+    /**
+     * Adds a relation to the table.
+     * 
+     * @param {any} relation 
+     * @memberof RelationsTable
+     */
+
+
+    _createClass(RelationsTable, [{
+        key: "add",
+        value: function add(relation) {
+            if (!relation) throw "relation cannot be null or undefined";
+            if (!relation.rhs) throw "relation's RHS cannot be null or undefined";
+            if (!relation.lhs) throw "relation's LHS cannot be null or undefined";
+
+            this.relations.push(relation);
+
+            if (!this.boxes[relation.rhs.id]) this.boxes[relation.rhs.id] = relation.rhs;
+            if (!this.boxes[relation.lhs.id]) this.boxes[relation.lhs.id] = relation.lhs;
+        }
+
+        /**
+         * Gets a box by providing the id.
+         * 
+         * @param {String} id 
+         * @memberof RelationsTable
+         */
+
+    }, {
+        key: "getBox",
+        value: function getBox(id) {
+            if (!id) throw "id cannot be null or undefined";
+
+            var box = this.boxes[id];
+            if (!box) return null;
+
+            return box;
+        }
+
+        /**
+         * Iterates through the relations.
+         * 
+         * @param {any} action 
+         * @memberof RelationsTable
+         */
+
+    }, {
+        key: "each",
+        value: function each(action) {
+            if (!action) throw "action cannot be null or undefined";
+
+            for (var i = 0; i < this.relations.length; i++) {
+                action(this.relations[i]);
+            }
+        }
+
+        /**
+         * Gets the length of the table (number of relations).
+         * 
+         * @readonly
+         * @memberof RelationsTable
+         */
+
+    }, {
+        key: "size",
+        get: function get() {
+            return this.relations.length;
+        }
+    }]);
+
+    return RelationsTable;
+}();
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90,7 +202,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Andrea Tino - 2017
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _relation = __webpack_require__(3);
+var _relation = __webpack_require__(2);
 
 var relation = _interopRequireWildcard(_relation);
 
@@ -377,7 +489,176 @@ var Arc = exports.Arc = function () {
 }();
 
 /***/ }),
-/* 1 */
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * relation.js
+ * Andrea Tino - 2017
+ */
+
+/**
+ * Describes a relation between boxes.
+ * 
+ * @export
+ * @class Relation
+ */
+var Relation = exports.Relation = function () {
+  /**
+   * Creates an instance of Relation.
+   * @param {Box} lhs 
+   * @param {Box} rhs 
+   * @param {any} type 
+   * @memberof Relation
+   */
+  function Relation(lhs, rhs, type) {
+    _classCallCheck(this, Relation);
+
+    if (!lhs) throw "lhs cannot be null or undefined";
+    if (!rhs) throw "rhs cannot be null or undefined";
+    if (!type) type = Relation.D;
+
+    this._lhs = lhs;
+    this._rhs = rhs;
+    this._type = type;
+  }
+
+  /**
+   * Gets the RHS.
+   * 
+   * @readonly
+   * @memberof Relation
+   */
+
+
+  _createClass(Relation, [{
+    key: "rhs",
+    get: function get() {
+      return this._rhs;
+    }
+
+    /**
+     * Gets the LHS.
+     * 
+     * @readonly
+     * @memberof Relation
+     */
+
+  }, {
+    key: "lhs",
+    get: function get() {
+      return this._lhs;
+    }
+
+    /**
+     * Gets the type of relation.
+     * 
+     * @readonly
+     * @memberof Relation
+     */
+
+  }, {
+    key: "type",
+    get: function get() {
+      return this._type;
+    }
+
+    /**
+     * Gets the value for DOWN relation type.
+     * 
+     * @readonly
+     * @static
+     * @memberof Arc
+     */
+
+  }], [{
+    key: "parseDirection",
+
+
+    /**
+     * Gets correct numerical value out of the letter for the arc type.
+     * 
+     * @readonly
+     * @static
+     * @memberof Arc
+     */
+    value: function parseDirection(type) {
+      if (!type) throw "type cannot be null or undefined!";
+
+      if (type.length != 1) throw "Invalid type: " + type;
+
+      if (type.toLowerCase() == "d") return Relation.D;
+      if (type.toLowerCase() == "u") return Relation.U;
+      if (type.toLowerCase() == "l") return Relation.L;
+      if (type.toLowerCase() == "r") return Relation.R;
+
+      throw "Invalid type: " + type;
+    }
+  }, {
+    key: "D",
+    get: function get() {
+      return 0;
+    }
+
+    /**
+     * Gets the value for UP relation type.
+     * 
+     * @readonly
+     * @static
+     * @memberof Arc
+     */
+
+  }, {
+    key: "U",
+    get: function get() {
+      return 1;
+    }
+
+    /**
+     * Gets the value for LEFT relation type.
+     * 
+     * @readonly
+     * @static
+     * @memberof Arc
+     */
+
+  }, {
+    key: "L",
+    get: function get() {
+      return 2;
+    }
+
+    /**
+     * Gets the value for RIGHT relation type.
+     * 
+     * @readonly
+     * @static
+     * @memberof Arc
+     */
+
+  }, {
+    key: "R",
+    get: function get() {
+      return 3;
+    }
+  }]);
+
+  return Relation;
+}();
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -386,110 +667,259 @@ var Arc = exports.Arc = function () {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Box = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * box.js
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Andrea Tino - 2017
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+exports.hitTest = hitTest;
+
+var _utils = __webpack_require__(6);
+
+var utils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * relationsTable.js
- * Andrea Tino - 2017
- */
-
-/**
- * Describes a table containing relations.
- * This class performs checks on the collection in order to avoid duplicates.
+ * Describes a generic content bock, thus a box.
  * 
  * @export
- * @class RelationsTable
+ * @class Box
  */
-var RelationsTable = exports.RelationsTable = function () {
+var Box = exports.Box = function () {
     /**
-     * Creates an instance of RelationsTable.
-     * @memberof RelationsTable
+     * Creates an instance of Box.
+     * @memberof Box
      */
-    function RelationsTable() {
-        _classCallCheck(this, RelationsTable);
+    function Box(id) {
+        _classCallCheck(this, Box);
 
-        this.relations = [];
-        this.boxes = {}; // We keep a dictionary of boxes: id -> box
+        if (!id) {
+            id = generateId();
+        }
+
+        this._id = id;
+        this._width = 0;
+        this._height = 0;
+        this._x = 0;
+        this._y = 0;
+        this._element = null; // Optional connection to the element
     }
 
     /**
-     * Adds a relation to the table.
+     * Gets the id.
      * 
-     * @param {any} relation 
-     * @memberof RelationsTable
+     * @readonly
+     * @memberof Box
      */
 
 
-    _createClass(RelationsTable, [{
-        key: "add",
-        value: function add(relation) {
-            if (!relation) throw "relation cannot be null or undefined";
-            if (!relation.rhs) throw "relation's RHS cannot be null or undefined";
-            if (!relation.lhs) throw "relation's LHS cannot be null or undefined";
-
-            this.relations.push(relation);
-
-            if (!this.boxes[relation.rhs.id]) this.boxes[relation.rhs.id] = relation.rhs;
-            if (!this.boxes[relation.lhs.id]) this.boxes[relation.lhs.id] = relation.lhs;
+    _createClass(Box, [{
+        key: "id",
+        get: function get() {
+            return this._id;
         }
 
         /**
-         * Gets a box by providing the id.
+         * Sets the id.
          * 
-         * @param {String} id 
-         * @memberof RelationsTable
+         * @memberof Box
          */
-
-    }, {
-        key: "getBox",
-        value: function getBox(id) {
-            if (!id) throw "id cannot be null or undefined";
-
-            var box = this.boxes[id];
-            if (!box) return null;
-
-            return box;
+        ,
+        set: function set(value) {
+            if (!value) throw "value cannot be null or undefined";
+            this._id = value;
         }
 
         /**
-         * Iterates through the relations.
-         * 
-         * @param {any} action 
-         * @memberof RelationsTable
-         */
-
-    }, {
-        key: "each",
-        value: function each(action) {
-            if (!action) throw "action cannot be null or undefined";
-
-            for (var i = 0; i < this.relations.length; i++) {
-                action(this.relations[i]);
-            }
-        }
-
-        /**
-         * Gets the length of the table (number of relations).
+         * Gets the width.
          * 
          * @readonly
-         * @memberof RelationsTable
+         * @memberof Box
          */
 
     }, {
-        key: "size",
+        key: "width",
         get: function get() {
-            return this.relations.length;
+            return this._width;
+        }
+
+        /**
+         * Sets the width.
+         * 
+         * @memberof Box
+         */
+        ,
+        set: function set(value) {
+            if (!Number.isInteger(value)) throw "Invalid value " + value + " for property width";
+            if (!checkSizeValue(value)) throw "Value must be a positive (or null) integer! Value " + value + " is not valid";
+
+            this._width = value;
+        }
+
+        /**
+         * Gets the height.
+         * 
+         * @readonly
+         * @memberof Box
+         */
+
+    }, {
+        key: "height",
+        get: function get() {
+            return this._height;
+        }
+
+        /**
+         * Sets the height.
+         * 
+         * @memberof Box
+         */
+        ,
+        set: function set(value) {
+            if (!Number.isInteger(value)) throw "Invalid value " + value + " for property height";
+            if (!checkSizeValue(value)) throw "Value must be a positive (or null) integer! Value " + value + " is not valid";
+
+            this._height = value;
+        }
+
+        /**
+         * Gets the x coordinate (from upper left corner).
+         * 
+         * @readonly
+         * @memberof Box
+         */
+
+    }, {
+        key: "x",
+        get: function get() {
+            return this._x;
+        }
+
+        /**
+         * Sets the x coordinate (from upper left corner).
+         * 
+         * @memberof Box
+         */
+        ,
+        set: function set(value) {
+            if (!Number.isInteger(value)) throw "Invalid value " + value + " for property x";
+            if (!checkCoordValue(value)) throw "Value must be a positive (or null) integer! Value " + value + " is not valid";
+
+            this._x = value;
+        }
+
+        /**
+         * Gets the y coordionate (from upper left corner).
+         * 
+         * @readonly
+         * @memberof Box
+         */
+
+    }, {
+        key: "y",
+        get: function get() {
+            return this._y;
+        }
+
+        /**
+         * Sets the y coordinate (from upper left corner).
+         * 
+         * @memberof Box
+         */
+        ,
+        set: function set(value) {
+            if (!Number.isInteger(value)) throw "Invalid value " + value + " for property y";
+            if (!checkCoordValue(value)) throw "Value must be a positive (or null) integer! Value " + value + " is not valid";
+
+            this._y = value;
+        }
+
+        /**
+         * Gets the element connected to the box.
+         * 
+         * @readonly
+         * @memberof Box
+         */
+
+    }, {
+        key: "element",
+        get: function get() {
+            return this._element;
+        }
+
+        /**
+         * Sets the element connected to the box.
+         * 
+         * @memberof Box
+         */
+        ,
+        set: function set(value) {
+            this._element = value;
         }
     }]);
 
-    return RelationsTable;
+    return Box;
 }();
 
+/**
+ * Tests hot between two boxes.
+ * 
+ * @export
+ * @param {any} box1 
+ * @param {any} box2 
+ */
+
+
+function hitTest(box1, box2) {
+    if (!box1) throw "box1 cannot be null or undefined";
+    if (!box2) throw "box2 cannot be null or undefined";
+
+    return utils.hitTest(box1.x, box1.x + box1.width, box1.y, box1.y + box1.height, box2.x, box2.x + box2.width, box2.y, box2.y + box2.height);
+}
+
+/**
+ * Returns a value indicating whether the size value is correct (positive or null integer).
+ * 
+ * @param {any} value 
+ * @returns 
+ */
+function checkSizeValue(value) {
+    if (!Number.isInteger(value)) return false;
+
+    return Number.isInteger(value) && value >= 0;
+}
+
+/**
+ * Returns a value indicating whether the coordinate value is correct (positive or null integer).
+ * 
+ * @param {any} value 
+ * @returns 
+ */
+function checkCoordValue(value) {
+    return Number.isInteger(value);
+}
+
+/**
+ * Generates a rnadom hex id.
+ * 
+ * @returns 
+ */
+function generateId() {
+    var letters = '0123456789abcdef'.split('');
+    var r = 'box-';
+    for (var i = 0; i < 6; i++) {
+        r += letters[Math.floor(Math.random() * 10)];
+    }
+    return r;
+}
+
 /***/ }),
-/* 2 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -505,11 +935,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Andrea Tino - 2017
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _relationsTable = __webpack_require__(1);
+var _relationsTable = __webpack_require__(0);
 
 var relationsTable = _interopRequireWildcard(_relationsTable);
 
-var _tree = __webpack_require__(0);
+var _tree = __webpack_require__(1);
 
 var tree = _interopRequireWildcard(_tree);
 
@@ -648,153 +1078,7 @@ function populateParentChildDict(table) {
 }
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * relation.js
- * Andrea Tino - 2017
- */
-
-/**
- * Describes a relation between boxes.
- * 
- * @export
- * @class Relation
- */
-var Relation = exports.Relation = function () {
-  /**
-   * Creates an instance of Relation.
-   * @param {Box} lhs 
-   * @param {Box} rhs 
-   * @param {any} type 
-   * @memberof Relation
-   */
-  function Relation(lhs, rhs, type) {
-    _classCallCheck(this, Relation);
-
-    if (!lhs) throw "lhs cannot be null or undefined";
-    if (!rhs) throw "rhs cannot be null or undefined";
-    if (!type) type = Relation.D;
-
-    this._lhs = lhs;
-    this._rhs = rhs;
-    this._type = type;
-  }
-
-  /**
-   * Gets the RHS.
-   * 
-   * @readonly
-   * @memberof Relation
-   */
-
-
-  _createClass(Relation, [{
-    key: "rhs",
-    get: function get() {
-      return this._rhs;
-    }
-
-    /**
-     * Gets the LHS.
-     * 
-     * @readonly
-     * @memberof Relation
-     */
-
-  }, {
-    key: "lhs",
-    get: function get() {
-      return this._lhs;
-    }
-
-    /**
-     * Gets the type of relation.
-     * 
-     * @readonly
-     * @memberof Relation
-     */
-
-  }, {
-    key: "type",
-    get: function get() {
-      return this._type;
-    }
-
-    /**
-     * Gets the value for DOWN relation type.
-     * 
-     * @readonly
-     * @static
-     * @memberof Arc
-     */
-
-  }], [{
-    key: "D",
-    get: function get() {
-      return 0;
-    }
-
-    /**
-     * Gets the value for UP relation type.
-     * 
-     * @readonly
-     * @static
-     * @memberof Arc
-     */
-
-  }, {
-    key: "U",
-    get: function get() {
-      return 1;
-    }
-
-    /**
-     * Gets the value for LEFT relation type.
-     * 
-     * @readonly
-     * @static
-     * @memberof Arc
-     */
-
-  }, {
-    key: "L",
-    get: function get() {
-      return 2;
-    }
-
-    /**
-     * Gets the value for RIGHT relation type.
-     * 
-     * @readonly
-     * @static
-     * @memberof Arc
-     */
-
-  }, {
-    key: "R",
-    get: function get() {
-      return 3;
-    }
-  }]);
-
-  return Relation;
-}();
-
-/***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -810,7 +1094,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Andrea Tino - 2017
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _tree = __webpack_require__(0);
+var _tree = __webpack_require__(1);
 
 var tree = _interopRequireWildcard(_tree);
 
@@ -1044,7 +1328,7 @@ function traverseBreadthFirstRec(node, type, action, iteration, parentNode) {
 }
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1110,7 +1394,7 @@ function assert(prop) {
 }
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1119,235 +1403,73 @@ function assert(prop) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Box = undefined;
+exports.BoxFactory = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * box.js
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * boxFactory.js
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Andrea Tino - 2017
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-exports.hitTest = hitTest;
+var _box = __webpack_require__(3);
 
-var _utils = __webpack_require__(5);
-
-var utils = _interopRequireWildcard(_utils);
+var content = _interopRequireWildcard(_box);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Describes a generic content bock, thus a box.
+ * Describes a factory for boxes.
  * 
  * @export
- * @class Box
+ * @class BoxFactory
  */
-var Box = exports.Box = function () {
+var BoxFactory = exports.BoxFactory = function () {
     /**
-     * Creates an instance of Box.
-     * @memberof Box
+     * Creates an instance of BoxFactory.
+     * 
+     * @memberof BoxFactory
      */
-    function Box(id) {
-        _classCallCheck(this, Box);
-
-        if (!id) {
-            id = generateId();
-        }
-
-        this._id = id;
-        this._width = 0;
-        this._height = 0;
-        this._x = 0;
-        this._y = 0;
+    function BoxFactory() {
+        _classCallCheck(this, BoxFactory);
     }
 
     /**
-     * Gets the id.
+     * Creates a box from an element.
      * 
-     * @readonly
-     * @memberof Box
+     * @memberof BoxFactory
+     * @returns A box.
      */
 
 
-    _createClass(Box, [{
-        key: "id",
-        get: function get() {
-            return this._id;
-        }
+    _createClass(BoxFactory, [{
+        key: "createFromElement",
+        value: function createFromElement(element) {
+            if (!element) {
+                throw "element cannot be null or undefined!";
+            }
 
-        /**
-         * Sets the id.
-         * 
-         * @memberof Box
-         */
-        ,
-        set: function set(value) {
-            if (!value) throw "value cannot be null or undefined";
-            this._id = value;
-        }
+            var id = !element.id || element.id.length == 0 ? null : "fromel-" + element.id;
 
-        /**
-         * Gets the width.
-         * 
-         * @readonly
-         * @memberof Box
-         */
+            var box = new content.Box(id); // If null, rnd will be assigned
 
-    }, {
-        key: "width",
-        get: function get() {
-            return this._width;
-        }
+            var rect = element.getBoundingClientRect();
 
-        /**
-         * Sets the width.
-         * 
-         * @memberof Box
-         */
-        ,
-        set: function set(value) {
-            if (!Number.isInteger(value)) throw "Invalid value " + value + " for property width";
-            if (!checkSizeValue(value)) throw "Value must be a positive (or null) integer! Value " + value + " is not valid";
+            box.x = 0;
+            box.y = 0;
+            box.width = Math.ceil(rect.width);
+            box.height = Math.ceil(rect.height);
+            box.element = element;
 
-            this._width = value;
-        }
-
-        /**
-         * Gets the height.
-         * 
-         * @readonly
-         * @memberof Box
-         */
-
-    }, {
-        key: "height",
-        get: function get() {
-            return this._height;
-        }
-
-        /**
-         * Sets the height.
-         * 
-         * @memberof Box
-         */
-        ,
-        set: function set(value) {
-            if (!Number.isInteger(value)) throw "Invalid value " + value + " for property height";
-            if (!checkSizeValue(value)) throw "Value must be a positive (or null) integer! Value " + value + " is not valid";
-
-            this._height = value;
-        }
-
-        /**
-         * Gets the x coordinate (from upper left corner).
-         * 
-         * @readonly
-         * @memberof Box
-         */
-
-    }, {
-        key: "x",
-        get: function get() {
-            return this._x;
-        }
-
-        /**
-         * Sets the x coordinate (from upper left corner).
-         * 
-         * @memberof Box
-         */
-        ,
-        set: function set(value) {
-            if (!Number.isInteger(value)) throw "Invalid value " + value + " for property x";
-            if (!checkCoordValue(value)) throw "Value must be a positive (or null) integer! Value " + value + " is not valid";
-
-            this._x = value;
-        }
-
-        /**
-         * Gets the y coordionate (from upper left corner).
-         * 
-         * @readonly
-         * @memberof Box
-         */
-
-    }, {
-        key: "y",
-        get: function get() {
-            return this._y;
-        }
-
-        /**
-         * Sets the y coordinate (from upper left corner).
-         * 
-         * @memberof Box
-         */
-        ,
-        set: function set(value) {
-            if (!Number.isInteger(value)) throw "Invalid value " + value + " for property y";
-            if (!checkCoordValue(value)) throw "Value must be a positive (or null) integer! Value " + value + " is not valid";
-
-            this._y = value;
+            return box;
         }
     }]);
 
-    return Box;
+    return BoxFactory;
 }();
 
-/**
- * Tests hot between two boxes.
- * 
- * @export
- * @param {any} box1 
- * @param {any} box2 
- */
-
-
-function hitTest(box1, box2) {
-    if (!box1) throw "box1 cannot be null or undefined";
-    if (!box2) throw "box2 cannot be null or undefined";
-
-    return utils.hitTest(box1.x, box1.x + box1.width, box1.y, box1.y + box1.height, box2.x, box2.x + box2.width, box2.y, box2.y + box2.height);
-}
-
-/**
- * Returns a value indicating whether the size value is correct (positive or null integer).
- * 
- * @param {any} value 
- * @returns 
- */
-function checkSizeValue(value) {
-    if (!Number.isInteger(value)) return false;
-
-    return Number.isInteger(value) && value >= 0;
-}
-
-/**
- * Returns a value indicating whether the coordinate value is correct (positive or null integer).
- * 
- * @param {any} value 
- * @returns 
- */
-function checkCoordValue(value) {
-    return Number.isInteger(value);
-}
-
-/**
- * Generates a rnadom hex id.
- * 
- * @returns 
- */
-function generateId() {
-    var letters = '0123456789abcdef'.split('');
-    var r = 'box-';
-    for (var i = 0; i < 6; i++) {
-        r += letters[Math.floor(Math.random() * 10)];
-    }
-    return r;
-}
-
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1358,35 +1480,43 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.connectivity = exports.trees = exports.content = exports.arrangement = undefined;
 
-var _arranger = __webpack_require__(8);
+var _arranger = __webpack_require__(9);
 
 var arranger = _interopRequireWildcard(_arranger);
 
-var _box = __webpack_require__(6);
+var _box = __webpack_require__(3);
 
 var box = _interopRequireWildcard(_box);
 
-var _connector = __webpack_require__(9);
+var _boxFactory = __webpack_require__(7);
+
+var boxFactory = _interopRequireWildcard(_boxFactory);
+
+var _connector = __webpack_require__(10);
 
 var connector = _interopRequireWildcard(_connector);
 
-var _relation = __webpack_require__(3);
+var _relation = __webpack_require__(2);
 
 var relation = _interopRequireWildcard(_relation);
 
-var _relationsTable = __webpack_require__(1);
+var _relationsTable = __webpack_require__(0);
 
 var relationsTable = _interopRequireWildcard(_relationsTable);
 
-var _table2tree = __webpack_require__(2);
+var _tableProvider = __webpack_require__(12);
+
+var tableProvider = _interopRequireWildcard(_tableProvider);
+
+var _table2tree = __webpack_require__(4);
 
 var table2tree = _interopRequireWildcard(_table2tree);
 
-var _tree = __webpack_require__(0);
+var _tree = __webpack_require__(1);
 
 var tree = _interopRequireWildcard(_tree);
 
-var _treeTraversal = __webpack_require__(4);
+var _treeTraversal = __webpack_require__(5);
 
 var treeTraversal = _interopRequireWildcard(_treeTraversal);
 
@@ -1398,8 +1528,10 @@ var arrangement = exports.arrangement = {
 
 var content = exports.content = {
     Box: box.Box,
+    BoxFactory: boxFactory.BoxFactory,
     Relation: relation.Relation,
-    RelationsTable: relationsTable.RelationsTable
+    RelationsTable: relationsTable.RelationsTable,
+    TableProvider: tableProvider.TableProvider
 };
 
 var trees = exports.trees = {
@@ -1419,7 +1551,7 @@ var connectivity = exports.connectivity = {
 };
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1435,23 +1567,23 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Andrea Tino - 2017
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _relationsTable = __webpack_require__(1);
+var _relationsTable = __webpack_require__(0);
 
 var relationsTable = _interopRequireWildcard(_relationsTable);
 
-var _table2tree = __webpack_require__(2);
+var _table2tree = __webpack_require__(4);
 
 var treeTableConversions = _interopRequireWildcard(_table2tree);
 
-var _tree = __webpack_require__(0);
+var _tree = __webpack_require__(1);
 
 var tree = _interopRequireWildcard(_tree);
 
-var _treeTraversal = __webpack_require__(4);
+var _treeTraversal = __webpack_require__(5);
 
 var traversal = _interopRequireWildcard(_treeTraversal);
 
-var _utils = __webpack_require__(5);
+var _utils = __webpack_require__(6);
 
 var utils = _interopRequireWildcard(_utils);
 
@@ -1470,10 +1602,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Arranger = exports.Arranger = function () {
     /**
      * Creates an instance of Arranger.
-     * @param {relationsTable.RelationsTable} table 
+     * @param {relationsTable.RelationsTable} table
+     * @param {bool} perform
      * @memberof Arranger
      */
-    function Arranger(table) {
+    function Arranger(table, perform) {
         _classCallCheck(this, Arranger);
 
         if (!table) throw "table cannot be null or undefined";
@@ -1483,6 +1616,8 @@ var Arranger = exports.Arranger = function () {
 
         this._marginX = 10; // In pixels
         this._marginY = 10; // In pixels
+
+        this._perform = perform || false;
     }
 
     /**
@@ -1511,6 +1646,18 @@ var Arranger = exports.Arranger = function () {
             //arrangeInDummyGrid(this.root, { marginx: 10, marginy: 10 });
             // Using dictionary grid as default algorithm
             arrangeInDictionaryGrid(this.root, { marginx: 10, marginy: 10 });
+
+            if (this._perform) {
+                new traversal.TreeTraverser(this.root).traverse(function (node, type) {
+                    var box = node.content;
+                    if (!box) throw "Node content (box) not present";
+
+                    if (box.element) {
+                        box.element.style.top = box.y + "px";
+                        box.element.style.left = box.x + "px";
+                    }
+                });
+            }
         }
     }, {
         key: "marginX",
@@ -1981,7 +2128,7 @@ function arrangeInDummyGrid(node, config) {
 }
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1997,11 +2144,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Andrea Tino - 2017
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _box = __webpack_require__(6);
+var _box = __webpack_require__(3);
 
 var blocks = _interopRequireWildcard(_box);
 
-var _snapsvg = __webpack_require__(10);
+var _snapsvg = __webpack_require__(11);
 
 var _snapsvg2 = _interopRequireDefault(_snapsvg);
 
@@ -2258,7 +2405,7 @@ function generateId() {
 }
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_LOCAL_MODULE_0__;var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*** IMPORTS FROM imports-loader ***/
@@ -10897,6 +11044,183 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 return Snap;
 }));
 }.call(window));
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.TableProvider = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * tableProvider.js
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Andrea Tino - 2017
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+var _boxFactory = __webpack_require__(7);
+
+var boxFactory = _interopRequireWildcard(_boxFactory);
+
+var _relation = __webpack_require__(2);
+
+var relation = _interopRequireWildcard(_relation);
+
+var _relationsTable = __webpack_require__(0);
+
+var relationsTable = _interopRequireWildcard(_relationsTable);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Describes a table provider.
+ * 
+ * @export
+ * @class TableProvider
+ */
+var TableProvider = exports.TableProvider = function () {
+    /**
+     * Creates an instance of TableProvider.
+     * 
+     * @memberof RelationsTable
+     * @param {*} root 
+     */
+    function TableProvider(root) {
+        _classCallCheck(this, TableProvider);
+
+        if (!root) {
+            throw "root cannot be null or undefined!";
+        }
+
+        this.root = root;
+    }
+
+    /**
+     * Gets the table by looking in the element.
+     * 
+     * @memberof TableProvider
+     * @returns A table with relations already filled.
+     */
+
+
+    _createClass(TableProvider, [{
+        key: "get",
+        value: function get() {
+            var table = new relationsTable.RelationsTable();
+
+            var id2boxDict = {};
+            var factory = new boxFactory.BoxFactory();
+            var searchElement = this.root;
+
+            var getBox = function getBox(element) {
+                if (!element) throw "element cannot be null or undefined!";
+
+                var id = element.id;
+                if (!id) throw "element id cannot be null or undefined!";
+
+                var box = id2boxDict[id];
+                if (!box) {
+                    box = factory.createFromElement(element);
+                    id2boxDict[id] = box;
+                }
+
+                return box;
+            };
+
+            var scanElements = function scanElements(action) {
+                // action accepts: (element, id, relDir, relId)
+                for (var i = 0; i < searchElement.children.length; i++) {
+                    var child = searchElement.children[i];
+
+                    var idAttribute = child.attributes[TableProvider.DataAttributeId].value;
+                    var relDirAttribute = child.attributes[TableProvider.DataAttributeRelationDirection].value;
+                    var relIdAttribute = child.attributes[TableProvider.DataAttributeRelationId].value;
+
+                    var idAttributeCond = idAttribute && idAttribute.length > 0;
+                    var relDirAttributeCond = typeof relDirAttribute !== "undefined";
+                    var relIdAttributeCond = typeof relIdAttribute !== "undefined";
+
+                    // We check only the id as the root element does not have the other two attributes
+                    if (idAttributeCond && relDirAttributeCond && relIdAttributeCond) {
+                        action(child, idAttribute, relDirAttribute, relIdAttribute);
+                    }
+                }
+            };
+
+            // First scan for elements
+            scanElements(function (element, id, relDir, relId) {
+                getBox(element); // First time, box is created
+            });
+
+            // Second, make relations
+            scanElements(function (element, id, relDir, relId) {
+                var curBox = id2boxDict[id];
+                var targetBox = id2boxDict[relId];
+
+                if (!curBox) throw "Could not find box with id " + id;
+                if (!targetBox) return; // An element which has no relation on LHS
+
+                // Direction as letter, convert
+                var direction = relation.Relation.parseDirection(relDir);
+
+                var rel = new relation.Relation(targetBox, curBox, direction);
+                table.add(rel);
+            });
+
+            return table;
+        }
+
+        /**
+         * Gets the name of the attribute to use to specify the direction (LHS).
+         * 
+         * @readonly
+         * @static
+         * @memberof TableProvider
+         */
+
+    }], [{
+        key: "DataAttributeRelationDirection",
+        get: function get() {
+            return "data-flowable-rel-dir";
+        }
+
+        /**
+         * Gets the name of the attribute to use to specify the associated node in the relation (LHS).
+         * 
+         * @readonly
+         * @static
+         * @memberof TableProvider
+         */
+
+    }, {
+        key: "DataAttributeRelationId",
+        get: function get() {
+            return "data-flowable-rel-id";
+        }
+
+        /**
+         * Gets the name of the attribute to use to specify one node's id.
+         * 
+         * @readonly
+         * @static
+         * @memberof TableProvider
+         */
+
+    }, {
+        key: "DataAttributeId",
+        get: function get() {
+            return "id";
+        }
+    }]);
+
+    return TableProvider;
+}();
 
 /***/ })
 /******/ ]);
