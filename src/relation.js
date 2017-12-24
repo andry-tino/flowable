@@ -86,4 +86,24 @@ export class Relation {
      * @memberof Arc
      */
     static get R() { return 3; }
+
+    /**
+     * Gets correct numerical value out of the letter for the arc type.
+     * 
+     * @readonly
+     * @static
+     * @memberof Arc
+     */
+    static parseDirection(type) { 
+        if (!type) throw "type cannot be null or undefined!";
+
+        if (type.length != 1) throw `Invalid type: ${type}`;
+
+        if (type.toLowerCase() == "d") return Relation.D;
+        if (type.toLowerCase() == "u") return Relation.U;
+        if (type.toLowerCase() == "l") return Relation.L;
+        if (type.toLowerCase() == "r") return Relation.R;
+
+        throw `Invalid type: ${type}`;
+    }
 }

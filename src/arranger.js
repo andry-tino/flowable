@@ -20,10 +20,11 @@ import * as utils from "./utils.js";
 export class Arranger {
     /**
      * Creates an instance of Arranger.
-     * @param {relationsTable.RelationsTable} table 
+     * @param {relationsTable.RelationsTable} table
+     * @param {bool} perform
      * @memberof Arranger
      */
-    constructor(table) {
+    constructor(table, perform) {
         if (!table) throw "table cannot be null or undefined";
 
         this.table = table;
@@ -31,6 +32,8 @@ export class Arranger {
 
         this._marginX = 10; // In pixels
         this._marginY = 10; // In pixels
+
+        this._perform = perform || false;
     }
 
     /**
@@ -76,6 +79,18 @@ export class Arranger {
         //arrangeInDummyGrid(this.root, { marginx: 10, marginy: 10 });
         // Using dictionary grid as default algorithm
         arrangeInDictionaryGrid(this.root, { marginx: 10, marginy: 10 });
+
+        if (this._perform) {
+            new traversal.TreeTraverser(this.root).traverse(function(node, type) {
+                let box = node.content;
+                if (!box) throw "Node content (box) not present";
+
+                if (box.element) {
+                    box.element.style.top = `${box.y}px`;
+                    box.element.style.left = `${box.x}px`;
+                }
+            });
+        }
     }
 }
 

@@ -26,6 +26,7 @@ export class Box {
         this._height = 0;
         this._x = 0;
         this._y = 0;
+        this._element = null; // Optional connection to the element
     }
 
     /**
@@ -125,6 +126,21 @@ export class Box {
 
         this._y = value;
     }
+
+    /**
+     * Gets the element connected to the box.
+     * 
+     * @readonly
+     * @memberof Box
+     */
+    get element() { return this._element; }
+
+    /**
+     * Sets the element connected to the box.
+     * 
+     * @memberof Box
+     */
+    set element(value) { this._element = value; }
 }
 
 /**
