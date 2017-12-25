@@ -60,17 +60,17 @@ export class TableProvider {
             for (let i = 0; i < searchElement.children.length; i++) {
                 let child = searchElement.children[i];
     
-                let idAttribute = child.attributes[TableProvider.DataAttributeId].value;
-                let relDirAttribute = child.attributes[TableProvider.DataAttributeRelationDirection].value;
-                let relIdAttribute = child.attributes[TableProvider.DataAttributeRelationId].value;
+                let idAttribute = child.attributes[TableProvider.DataAttributeId];
+                let relDirAttribute = child.attributes[TableProvider.DataAttributeRelationDirection];
+                let relIdAttribute = child.attributes[TableProvider.DataAttributeRelationId];
 
-                let idAttributeCond = idAttribute && idAttribute.length > 0;
+                let idAttributeCond = typeof(idAttribute) !== "undefined";
                 let relDirAttributeCond = typeof(relDirAttribute) !== "undefined";
                 let relIdAttributeCond = typeof(relIdAttribute) !== "undefined";
     
                 // We check only the id as the root element does not have the other two attributes
                 if (idAttributeCond && relDirAttributeCond && relIdAttributeCond) {
-                    action(child, idAttribute, relDirAttribute, relIdAttribute);
+                    action(child, idAttribute.value, relDirAttribute.value, relIdAttribute.value);
                 }
             }
         };

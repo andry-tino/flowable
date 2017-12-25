@@ -11138,17 +11138,17 @@ var TableProvider = exports.TableProvider = function () {
                 for (var i = 0; i < searchElement.children.length; i++) {
                     var child = searchElement.children[i];
 
-                    var idAttribute = child.attributes[TableProvider.DataAttributeId].value;
-                    var relDirAttribute = child.attributes[TableProvider.DataAttributeRelationDirection].value;
-                    var relIdAttribute = child.attributes[TableProvider.DataAttributeRelationId].value;
+                    var idAttribute = child.attributes[TableProvider.DataAttributeId];
+                    var relDirAttribute = child.attributes[TableProvider.DataAttributeRelationDirection];
+                    var relIdAttribute = child.attributes[TableProvider.DataAttributeRelationId];
 
-                    var idAttributeCond = idAttribute && idAttribute.length > 0;
+                    var idAttributeCond = typeof idAttribute !== "undefined";
                     var relDirAttributeCond = typeof relDirAttribute !== "undefined";
                     var relIdAttributeCond = typeof relIdAttribute !== "undefined";
 
                     // We check only the id as the root element does not have the other two attributes
                     if (idAttributeCond && relDirAttributeCond && relIdAttributeCond) {
-                        action(child, idAttribute, relDirAttribute, relIdAttribute);
+                        action(child, idAttribute.value, relDirAttribute.value, relIdAttribute.value);
                     }
                 }
             };
